@@ -4,3 +4,5 @@ scrapy-fake-useragent
 psycopg2-binary
 pandas
 ipython
+matplotlib
+seaborn
