@@ -6,3 +6,4 @@ pandas
 ipython
 matplotlib
 seaborn
+scipy
