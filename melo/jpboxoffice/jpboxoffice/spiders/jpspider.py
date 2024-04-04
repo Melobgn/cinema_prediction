@@ -7,7 +7,7 @@ class JpspiderSpider(scrapy.Spider):
     name = "jpspider"
     allowed_domains = ["jpbox-office.com"]
     start_urls = ["https://www.jpbox-office.com/v9_demarrage.php?view=2"]
-
+    urls_vues = set()
     custom_settings = {
     'FEEDS' : {
         'moviedata.json' : {'format' : 'json', 'overwrite' : True},
@@ -19,6 +19,14 @@ class JpspiderSpider(scrapy.Spider):
             relative_url = movie.xpath('//*[@id="content"]//td[3]/h3/a/@href').get()
             # print("Relative URL:", relative_url)
             movie_url = 'https://www.jpbox-office.com/' + relative_url
+
+            # Vérifie si l'URL a déjà été visitée
+            if movie_url in self.urls_vues:
+                continue  # Passe à la prochaine URL
+                
+            # Ajoute l'URL à l'ensemble des URL visitées
+            else:
+                self.urls_vues.add(movie_url)
             yield response.follow(movie_url, callback=self.parse_movie_page)
 
         current_page = response.meta.get('current_page', 0)
@@ -33,8 +41,40 @@ class JpspiderSpider(scrapy.Spider):
         movie_item = JpboxofficeItem()
 
         movie_item['url'] = response.url
-        movie_item['name'] = response.xpath('//h1/text()').get()
-        # movie_item['years_career'] = response.xpath('//*[@id="content-layout"]/div[2]/div/section[1]/div/div[2]/div[1]/div[1]/text()').get()
-        # movie_item['number_films_series'] = response.xpath('//*[@id="content-layout"]/div[2]/div/section[1]/div/div[2]/div[2]/div[1]/text()').get()
+        movie_item['titre'] = response.xpath('//h1/text()').get()
+        movie_item['realisateur'] = response.css('table.table_2022titre h4 a::text').get()
+        movie_item['pays'] = response.css('table.table_2022titre h3 a::text').get()
+        movie_item['date'] = response.xpath('//table[@class="tablelarge1"]//div//p//a/text()').get()
+        movie_item['genre'] = response.css('table.table_2022titre h3 a:nth-of-type(2)::text').get()
+        movie_item['studio'] = response.xpath('//h3[text()="Distribué par"]/following-sibling::text()[1]').get()
+        movie_item['casting'] = response.xpath('//div[5]/div[1]/ul/li[6]/a/text()')[1].extract().strip()
+        movie_item['franchise'] = response.xpath('//div[@id="nav2"]//ul//a[contains(text(), "Franchise")]/text()').get()
+        movie_item['remake'] = response.xpath('//div[@id="nav2"]//ul//a[contains(text(), "Remake")]/text()').get()
+        movie_item['nombre_entrees_premiere_semaine'] = response.xpath("//table[contains(@class, 'tablesmall') and contains(@class, 'tablesmall2')]/tr[9]/td[contains(@class, 'col_poster_contenu_majeur')]/text()").get()
+        movie_item['poids_premiere_semaine'] = response.xpath("//table[contains(@class, 'tablesmall') and contains(@class, 'tablesmall2')]/tr[9]/td[3]/text()").get()
+        movie_item['nombre_salles_premiere_semaine'] = response.xpath("//table[contains(@class, 'tablesmall') and contains(@class, 'tablesmall5')]/tr[3]/td[6]/text()").get()
+        
+        
+        li5_text = response.xpath('//*[@id="nav2"]/ul/li[5]/a/text()')[-1].extract()
+        li6_text = response.xpath('//*[@id="nav2"]/ul/li[6]/a/text()')[-1].extract()
+
+        if "Casting" in li5_text:
+            casting_url = response.xpath('//*[@id="nav2"]/ul/li[5]/a/@href').get()
+        elif "Casting" in li6_text:
+            casting_url = response.xpath('//*[@id="nav2"]/ul/li[6]/a/@href').get()
+        else:
+            casting_url = None
+
+        if casting_url:
+            yield response.follow(casting_url, callback=self.parse_casting, meta={'movie_item': movie_item})
+
+
+
+    def parse_casting(self, response):
+        #'response.meta' pour accéder aux métadonnées transmises
+        movie_item = response.meta['movie_item']
+        movie_item['acteurs'] = response.xpath('//tr[@valign="top"]/td[contains(@class, "col_poster_titre")]/h3/a[@itemprop="name"]/text()').getall()
+        movie_item['producteur'] = response.xpath('//tr/td[contains(@class, "col_poster_titre") and @itemprop="producer"]/h3/a[@itemprop="name"]/text()').get()
+        movie_item['compositeur'] = response.xpath('//tr/td[contains(@class, "col_poster_titre") and @itemprop="compositor"]/h3/a[@itemprop="name"]/text()').get()
 
         yield movie_item
