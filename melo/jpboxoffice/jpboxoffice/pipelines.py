@@ -6,8 +6,25 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-
+import datetime
 
 class JpboxofficePipeline:
     def process_item(self, item, spider):
+
+        item['titre'] = item['titre'].strip()
+        item['pays'] = item['pays'].strip()
+        item['genre'] = item['genre'].strip()
+        item['studio'] = item['studio'].strip()
+        item['acteurs'] = [acteur.strip() for acteur in item['acteurs']]
+        
+        if item['date']:
+            item['date'] = datetime.datetime.strptime(item['date'].strip(), "%d/%m/%Y").strftime("%Y-%m-%d")
+        
+        #verifie si producteur contient une valeur avant de strip
+        if item['producteur']:
+            item['producteur'] = item['producteur'].strip()
+      
+        item['realisateur'] = ''.join(item['realisateur'])
+        item['realisateur'] = item['realisateur'].lstrip()
+
         return item
