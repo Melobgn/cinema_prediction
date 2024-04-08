@@ -15,6 +15,8 @@ class JpboxofficePipeline:
         item['pays'] = item['pays'].strip()
         item['genre'] = item['genre'].strip()
         item['studio'] = item['studio'].strip()
+        item['entrees_premiere_semaine'] = item['entrees_premiere_semaine'].strip()
+        item['salles_premiere_semaine'] = item['salles_premiere_semaine'].strip()
         item['acteurs'] = [acteur.strip() for acteur in item['acteurs']]
         
         if item['date']:

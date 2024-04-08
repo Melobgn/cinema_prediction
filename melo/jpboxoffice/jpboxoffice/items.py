@@ -19,7 +19,6 @@ class JpboxofficeItem(scrapy.Item):
     casting = scrapy.Field()
     franchise = scrapy.Field()
     remake = scrapy.Field()
-    poids_premiere_semaine = scrapy.Field()
     acteurs = scrapy.Field()
     producteur = scrapy.Field()
     compositeur = scrapy.Field()
