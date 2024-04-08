@@ -29,4 +29,12 @@ class JpboxofficePipeline:
         item['realisateur'] = ''.join(item['realisateur'])
         item['realisateur'] = item['realisateur'].lstrip()
 
+        item['budget'] = item['budget'].replace(' ', '')  # Enlève tous les espaces
+        item['budget'] = item['budget'].replace('$', '')  # Enlève le symbole $
+        item['budget'] = item['budget'].replace('€', '')
+
+        item['budget'] = int(item['budget'])
+        item['entrees_premiere_semaine'] = int(item['entrees_premiere_semaine'])
+        item['salles_premiere_semaine'] = int(item['salles_premiere_semaine'])
+        
         return item

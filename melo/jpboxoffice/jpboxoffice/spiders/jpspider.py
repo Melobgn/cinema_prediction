@@ -45,8 +45,6 @@ class JpspiderSpider(scrapy.Spider):
                         self.urls_vues.add(movie_full_url)
 
 
-                    
-
                     # Envoie une requête pour analyser la page du film
                     yield scrapy.Request(movie_full_url, callback=self.parse_movie_page,meta={'entrees_premiere_semaine' : entrees_premiere_semaine, 'salles_premiere_semaine' : salles_premiere_semaine})
             else:
