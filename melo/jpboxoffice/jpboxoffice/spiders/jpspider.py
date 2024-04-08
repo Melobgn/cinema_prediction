@@ -8,11 +8,12 @@ class JpspiderSpider(scrapy.Spider):
     allowed_domains = ["jpbox-office.com"]
     start_urls = ["https://www.jpbox-office.com/v9_demarrage.php?view=2"]
     urls_vues = set()
+    
     custom_settings = {
     'FEEDS' : {
-        'moviedata.json' : {'format' : 'json', 'overwrite' : True},
-}
-}
+        'moviesdata.json' : {'format' : 'json', 'overwrite' : True},
+    }
+    }
     def parse(self, response):
         # Log info pour signaler le début de l'analyse
         self.logger.info("Début de l'analyse de la page principale: %s", response.url)
@@ -22,11 +23,14 @@ class JpspiderSpider(scrapy.Spider):
 
         # Base URL pour les films
         url_base = "https://www.jpbox-office.com/"
-        entrees_premiere_semaine = response.css('table.tablesmall.tablesmall5 tr td.col_poster_contenu_majeur::text').get()
-        salles_premiere_semaine = response.css('table.tablesmall.tablesmall5 tr:nth-child(2) td:nth-child(7)::text').get()
+
         for movie in movies:
             # Extraction de l'URL du film
             movie_url = movie.xpath('.//h3/a/@href').getall()
+            # entrees_premiere_semaine = response.css('table.tablesmall.tablesmall5 tr td.col_poster_contenu_majeur::text').get()
+            # salles_premiere_semaine = response.css('table.tablesmall.tablesmall5 tr:nth-child(2) td:nth-child(7)::text').get()
+            # movie_item['entrees_premiere_semaine'] = entrees_premiere_semaine
+            # movie_item['salles_premiere_semaine'] = salles_premiere_semaine   
             self.logger.info("URLs des films extraites : %s", movie_url)
 
             # Vérifie s'il y a des URLs de film extraites
@@ -46,8 +50,7 @@ class JpspiderSpider(scrapy.Spider):
 
 
                     # Envoie une requête pour analyser la page du film
-                    yield scrapy.Request(movie_full_url, callback=self.parse_movie_page,meta={'entrees_premiere_semaine' : entrees_premiere_semaine, 'salles_premiere_semaine' : salles_premiere_semaine})
-            else:
+                    yield scrapy.Request(movie_full_url, callback=self.parse_movie_page)
                 self.logger.warning("Aucune URL de film trouvée dans la ligne : %s", movie.extract())
 
 
@@ -62,11 +65,10 @@ class JpspiderSpider(scrapy.Spider):
     def parse_movie_page(self, response):
         # Log info pour signaler le début de l'analyse d'une page de film
         self.logger.info("Début de l'analyse de la page du film: %s", response.url)
-
         movie_item = JpboxofficeItem()
 
-        entrees_premiere_semaine = response.meta.get('entrees_premiere_semaine')
-        salles_premiere_semaine = response.meta.get('salles_premiere_semaine')
+        # entrees_premiere_semaine = response.meta.get('entrees_premiere_semaine')
+        # salles_premiere_semaine = response.meta.get('salles_premiere_semaine')
 
 
         movie_item['url'] = response.url
@@ -79,8 +81,8 @@ class JpspiderSpider(scrapy.Spider):
         movie_item['casting'] = response.xpath('//div[5]/div[1]/ul/li[6]/a/text()')[1].extract().strip()
         movie_item['franchise'] = response.xpath('//div[@id="nav2"]//ul//a[contains(text(), "Franchise")]/text()').get()
         movie_item['remake'] = response.xpath('//div[@id="nav2"]//ul//a[contains(text(), "Remake")]/text()').get()
-        movie_item['entrees_premiere_semaine'] = entrees_premiere_semaine
-        movie_item['salles_premiere_semaine'] = salles_premiere_semaine        
+        # movie_item['entrees_premiere_semaine'] = entrees_premiere_semaine
+        # movie_item['salles_premiere_semaine'] = salles_premiere_semaine        
         
         li5_text = response.xpath('//*[@id="nav2"]/ul/li[5]/a/text()')[-1].extract()
         li6_text = response.xpath('//*[@id="nav2"]/ul/li[6]/a/text()')[-1].extract()
@@ -99,14 +101,14 @@ class JpspiderSpider(scrapy.Spider):
         budget_url = response.xpath('//*[@id="nav2"]/ul/li[1]/a/@href').get()
         yield response.follow(budget_url, callback=self.parse_budget, meta={'movie_item' : movie_item})
 
-        if casting_url:
-            request = scrapy.Request(response.urljoin(casting_url), callback=self.parse_casting, meta={'item': movie_item})
-            request.meta['budget_url'] = budget_url  # Stockez l'URL AKA pour l'utiliser plus tard
-            yield request
-        elif budget_url:  # Si la date de sortie n'est pas nécessaire ou absente
-            yield scrapy.Request(response.urljoin(budget_url), callback=self.parse_budget, meta={'item': movie_item})
-        else:
-            yield movie_item
+        # if casting_url:
+        #     request = scrapy.Request(response.urljoin(casting_url), callback=self.parse_casting, meta={'movie_item': movie_item})
+        #     request.meta['budget_url'] = budget_url  # Stockez l'URL AKA pour l'utiliser plus tard
+        #     yield request
+        # elif budget_url:  # Si la date de sortie n'est pas nécessaire ou absente
+        #     yield scrapy.Request(response.urljoin(budget_url), callback=self.parse_budget, meta={'movie_item': movie_item})
+        # else:
+        # yield movie_item
  
 
     def parse_casting(self, response):
