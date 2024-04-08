@@ -57,7 +57,6 @@ class JpspiderSpider(scrapy.Spider):
         movie_item['casting'] = response.xpath('//div[5]/div[1]/ul/li[6]/a/text()')[1].extract().strip()
         movie_item['franchise'] = response.xpath('//div[@id="nav2"]//ul//a[contains(text(), "Franchise")]/text()').get()
         movie_item['remake'] = response.xpath('//div[@id="nav2"]//ul//a[contains(text(), "Remake")]/text()').get()
-        movie_item['poids_premiere_semaine'] = response.xpath("//table[contains(@class, 'tablesmall') and contains(@class, 'tablesmall2')]/tr[9]/td[3]/text()").get()
         movie_item['entrees_premiere_semaine'] = entrees_premiere_semaine
         movie_item['salles_premiere_semaine'] = salles_premiere_semaine        
         
