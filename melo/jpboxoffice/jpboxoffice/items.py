@@ -16,7 +16,6 @@ class JpboxofficeItem(scrapy.Item):
     date = scrapy.Field()
     genre = scrapy.Field()
     studio = scrapy.Field()
-    casting = scrapy.Field()
     franchise = scrapy.Field()
     remake = scrapy.Field()
     acteurs = scrapy.Field()
