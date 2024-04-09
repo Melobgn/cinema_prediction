@@ -7,6 +7,8 @@ import scrapy
 
 
 class JpboxofficeItem(scrapy.Item):
+    entrees_premiere_semaine = scrapy.Field()
+    salles_premiere_semaine = scrapy.Field()
     url = scrapy.Field()
     titre = scrapy.Field()
     realisateur = scrapy.Field()
@@ -17,9 +19,7 @@ class JpboxofficeItem(scrapy.Item):
     casting = scrapy.Field()
     franchise = scrapy.Field()
     remake = scrapy.Field()
-    nombre_entrees_premiere_semaine = scrapy.Field()
-    nombre_salles_premiere_semaine = scrapy.Field()
-    poids_premiere_semaine = scrapy.Field()
     acteurs = scrapy.Field()
     producteur = scrapy.Field()
     compositeur = scrapy.Field()
+    budget = scrapy.Field()
