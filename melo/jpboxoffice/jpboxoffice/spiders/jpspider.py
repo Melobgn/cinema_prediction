@@ -11,7 +11,7 @@ class JpspiderSpider(scrapy.Spider):
     
     custom_settings = {
     'FEEDS' : {
-        'moviesdata.json' : {'format' : 'json', 'overwrite' : True},
+        'moviesdata.csv' : {'format' : 'csv', 'overwrite' : True},
     }
     }
     def parse(self, response):
@@ -78,10 +78,9 @@ class JpspiderSpider(scrapy.Spider):
         movie_item['date'] = response.xpath('//table[@class="tablelarge1"]//div//p//a/text()').get()
         movie_item['genre'] = response.css('table.table_2022titre h3 a:nth-of-type(2)::text').get()
         movie_item['studio'] = response.xpath('//h3[text()="Distribué par"]/following-sibling::text()[1]')[-1].get()
-        movie_item['casting'] = response.xpath('//div[5]/div[1]/ul/li[6]/a/text()')[1].extract().strip()
         movie_item['franchise'] = response.xpath('//div[@id="nav2"]//ul//a[contains(text(), "Franchise")]/text()').get()
         movie_item['remake'] = response.xpath('//div[@id="nav2"]//ul//a[contains(text(), "Remake")]/text()').get()
-        # movie_item['entrees_premiere_semaine'] = entrees_premiere_semaine
+        movie_item['entrees_premiere_semaine'] = response.css('table.tablesmall.tablesmall2 tr:last-child  td.col_poster_contenu_majeur::text').get()
         # movie_item['salles_premiere_semaine'] = salles_premiere_semaine        
         
         li5_text = response.xpath('//*[@id="nav2"]/ul/li[5]/a/text()')[-1].extract()
