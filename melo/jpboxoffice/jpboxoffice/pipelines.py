@@ -38,3 +38,4 @@ class JpboxofficePipeline:
         item['salles_premiere_semaine'] = int(item['salles_premiere_semaine'])
         
         return item
+        
