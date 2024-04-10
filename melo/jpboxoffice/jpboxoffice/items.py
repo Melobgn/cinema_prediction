@@ -12,6 +12,7 @@ class JpboxofficeItem(scrapy.Item):
     url = scrapy.Field()
     titre = scrapy.Field()
     realisateur = scrapy.Field()
+    duree = scrapy.Field()
     pays = scrapy.Field()
     date = scrapy.Field()
     genre = scrapy.Field()

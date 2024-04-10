@@ -74,6 +74,7 @@ class JpspiderSpider(scrapy.Spider):
         movie_item['url'] = response.url
         movie_item['titre'] = response.xpath('//h1/text()').get()
         movie_item['realisateur'] = response.css('table.table_2022titre h4 a::text').get()
+        movie_item['duree'] = response.xpath('//*[@id="content"]//td[2]/h3/text()[4]').get()
         movie_item['pays'] = response.css('table.table_2022titre h3 a::text').get()
         movie_item['date'] = response.xpath('//table[@class="tablelarge1"]//div//p//a/text()').get()
         movie_item['genre'] = response.css('table.table_2022titre h3 a:nth-of-type(2)::text').get()
