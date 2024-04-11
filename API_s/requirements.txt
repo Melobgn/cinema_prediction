@@ -1,0 +1,4 @@
+scikit-learn==1.4.1
+fastapi<1
+uvicorn<1
+requests
