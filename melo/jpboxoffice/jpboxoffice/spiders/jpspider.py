@@ -87,6 +87,10 @@ class JpspiderSpider(scrapy.Spider):
         li5_text = response.xpath('//*[@id="nav2"]/ul/li[5]/a/text()')[-1].extract()
         li6_text = response.xpath('//*[@id="nav2"]/ul/li[6]/a/text()')[-1].extract()
 
+        
+
+        if "A-P"
+
         if "Casting" in li5_text:
             casting_url = response.xpath('//*[@id="nav2"]/ul/li[5]/a/@href').get()
         elif "Casting" in li6_text:
