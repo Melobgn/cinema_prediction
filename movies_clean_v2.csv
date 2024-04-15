@@ -1,4 +1,4 @@
-acteurs,budget,compositeur,date,entrees_premiere_semaine,franchise,genre,pays,producteur,realisateur,remake,studio,titre,season,coeff_studio,scoring_acteurs,scoring_acteurs&realisateur
+acteurs,budget,compositeur,date,entrees_premiere_semaine,franchise,genre,pays,producteur,realisateur,remake,studio,titre,season,coeff_studio,scoring_acteurs,scoring_acteurs_realisateur
 "Sam Worthington, Sigourney Weaver",315000000,James Horner,2009-12-16,2648596,Franchise,Science Fiction,Etats-Unis,,James Cameron,,20th Century Fox,Avatar,Hiver,3,0.0,0.27586206896551724
 "Daniel Radcliffe, Emma Watson, Gary Oldman, Alan Rickman, Emma Thompson",130000000,John Williams,2004-06-02,2503699,Franchise,Fantasy,Etats-Unis,,Alfonso Cuaron,,Warner Bros.,Harry Potter et le prisonnier d'Azkaban,Été,3,0.7241379310344828,0.7241379310344828
 "Adam Driver, Benicio Del Toro, Joseph Gordon-Levitt",200000000,John Williams,2017-12-13,2510462,Franchise,Fantasy,Etats-Unis,Kathleen Kennedy,Rian Johnson,,Walt Disney Pictures,Star Wars: Les derniers Jedi,Hiver,3,0.0,0.0
