@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from model_utils import load_model, prediction
+#from model_utils import load_model, prediction
 import pandas as pd
 
 app = FastApi()
@@ -19,7 +19,7 @@ class FeaturesInput(BaseModel):
     titre: str
     season: str
     coeff_studio: int
-    scoring_acteurs_realisateur: float
+    #scoring_acteurs_realisateur: float #donnée indisponible mais est calculée avec 
     
 
 class PredictionOutput(BaseModel):
@@ -42,7 +42,26 @@ def prediction_root(feature_input: FeaturesInput):
 
     prediction = model.prediction(model, [[F1, F2, F3, F4, F5, F6, F7, F8]])
 
-    return PredictionOutput(category=prediction)
+    return PredictionOutput(prediction=prediction)
 
+# actors = pd.read_csv('acteurs.csv')
 
-def 
+# def calcul_poids_total(casting: FeaturesInput, realisateur: FeaturesInput):
+#     poids_total = 0
+#     casting = list(casting.split(", ")) 
+    
+#     for i in range (len(casting)): 
+#         if casting[i] in actors['name'].values: #si acteur[indice] se trouve dans la colonne 'name' du dataframe 'acteurs'
+#             poids_acteur = actors.loc[actors['name'] == casting[i], 'coef_poids'].values[0]  # Récupérer le poids de l'acteur
+#             poids_total += poids_acteur  # Multiplie le poids de l'acteur par la valeur présente dans poids_total
+
+#     if realisateur in actors['name'].values:
+#         poids_realisateur = actors.loc[actors['name'] == realisateur, 'coef_poids'].values[0]
+#         poids_total += poids_realisateur
+
+#     return poids_total
+
+# #route api pour effectuer calcul et renvoyer le résultat
+# @app.post("/prediction/")
+# async def prediction (data: FeaturesInput):
+#     score_acteurs_realisateur = calcul_poids_total(data)
