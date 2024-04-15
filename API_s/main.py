@@ -1,14 +1,16 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import model_utils
+from model_utils import load_model, prediction
+import pandas as pd
 
 app = FastApi()
-model_utils.load_model()
+model=load_model()
+
 
 class FeaturesInput(BaseModel):
     budget:float
     compositeur: str
-    date:
+    date: str
     franchise: str
     genre: str
     pays: str
@@ -17,12 +19,11 @@ class FeaturesInput(BaseModel):
     titre: str
     season: str
     coeff_studio: int
-    scoring_acteurs&realisateur:
-    pass
-
+    scoring_acteurs_realisateur: float
+    
 
 class PredictionOutput(BaseModel):
-    entrees_premiere_semaine: int
+    prediction: int
 
 
 def prediction_root(feature_input: FeaturesInput):
@@ -37,8 +38,11 @@ def prediction_root(feature_input: FeaturesInput):
     F9 = feature_input.titre
     F10 = feature_input.season
     F11 = feature_input.coeff_studio
-    F12 = feature_input.scoring_acteurs&realisateur
-    pred = model_utils.prediction(model, [[F1, F2, F3, F4, F5, F6, F7, F8]])
+    F12 = feature_input.scoring_acteurs_realisateur
 
-    return PredictionOutput(category=pred)
+    prediction = model.prediction(model, [[F1, F2, F3, F4, F5, F6, F7, F8]])
 
+    return PredictionOutput(category=prediction)
+
+
+def 
