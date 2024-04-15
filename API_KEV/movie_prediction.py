@@ -3,7 +3,7 @@ import pickle
 
 #chargement du modèle
 
-with open ('model.pkl', 'rb') as file:
+with open ('modele_api.pkl', 'rb') as file:
     model = pickle.load(file)
 
 
