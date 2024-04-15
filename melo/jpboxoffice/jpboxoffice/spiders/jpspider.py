@@ -82,14 +82,18 @@ class JpspiderSpider(scrapy.Spider):
         movie_item['franchise'] = response.xpath('//div[@id="nav2"]//ul//a[contains(text(), "Franchise")]/text()').get()
         movie_item['remake'] = response.xpath('//div[@id="nav2"]//ul//a[contains(text(), "Remake")]/text()').get()
         movie_item['entrees_premiere_semaine'] = response.css('table.tablesmall.tablesmall2 tr:last-child  td.col_poster_contenu_majeur::text').get()
-        # movie_item['salles_premiere_semaine'] = salles_premiere_semaine        
-        
+
+        a_p = response.xpath('normalize-space(//table[@class="tablesmall tablesmall5"]//tr//td[@class="col_poster_contenu_majeur"]//strong/text())').get()
+        first_week = response.xpath('normalize-space(//table[@class="tablesmall tablesmall5"]//tr//td[@class="col_poster_contenu_majeur"]//strong/a/text())').get()
+
+        if "A-p" in a_p:
+          movie_item['salles_premiere_semaine'] = response.xpath('//table[@class="tablesmall tablesmall5"]//tr[3]//td[6]/text()').get()
+        elif "1" in first_week:
+          movie_item['salles_premiere_semaine'] = response.xpath('//table[@class="tablesmall tablesmall5"]//tr[2]//td[6]/text()').get() 
+
         li5_text = response.xpath('//*[@id="nav2"]/ul/li[5]/a/text()')[-1].extract()
         li6_text = response.xpath('//*[@id="nav2"]/ul/li[6]/a/text()')[-1].extract()
-
-        
-
-        if "A-P"
+      
 
         if "Casting" in li5_text:
             casting_url = response.xpath('//*[@id="nav2"]/ul/li[5]/a/@href').get()
