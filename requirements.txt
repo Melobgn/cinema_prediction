@@ -1,0 +1,13 @@
+itemadapter==0.8.0
+Scrapy==2.11.1
+scrapy-fake-useragent
+psycopg2-binary
+pandas
+ipython
+matplotlib
+seaborn
+numpy
+scipy>=1.6.1,<=1.11.4
+pycaret
+joblib==1.3
+scikit-learn
