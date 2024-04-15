@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+Flask
+scikit-learn
+catboost
+=======
 itemadapter==0.8.0
 Scrapy==2.11.1
 scrapy-fake-useragent
@@ -11,3 +16,4 @@ scipy>=1.6.1,<=1.11.4
 pycaret
 joblib==1.3
 scikit-learn
+>>>>>>> a001d3eb53bf9fab15c73836774422816fb587d9
