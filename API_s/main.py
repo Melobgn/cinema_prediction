@@ -7,16 +7,16 @@ model_utils.load_model()
 
 class FeaturesInput(BaseModel):
     budget:float
-    compositeur: 
+    compositeur: str
     date:
-    franchise: 
-    genre:
-    pays:
-    producteur: 
-    remake:
-    titre:
-    season:
-    coeff_studio:
+    franchise: str
+    genre: str
+    pays: str
+    producteur: str
+    remake: str
+    titre: str
+    season: str
+    coeff_studio: int
     scoring_acteurs&realisateur:
     pass
 
