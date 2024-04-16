@@ -25,7 +25,7 @@ def archive_page(request):
     if conn:
         try:
             cursor = conn.cursor(dictionary=True)
-            cursor.execute("SELECT titre, description, image, date_sortie, genre, entrees, entrees_pred FROM films order by date_sortie DESC")
+            cursor.execute("SELECT titre, description, image, date_sortie, genre, salles, entrees, entrees_pred FROM films order by date_sortie DESC")
             films = cursor.fetchall()
             cursor.close()
             conn.close()
