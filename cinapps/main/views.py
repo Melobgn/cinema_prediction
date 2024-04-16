@@ -9,6 +9,7 @@ import json
 import mysql.connector
 from .database import connect_to_azure_mysql
 
+@login_required
 def home_page(request):
     return render(request, 'main/home_page.html')
 
