@@ -1,0 +1,36 @@
+{% load static %}
+{% url "home" as url_home %}
+<nav>
+    <div class="navbar-container animated zoomIn" data-wow-duration="1s" data-wow-delay="1s">
+      <div class="img-nav">
+        <div class="nav_link_reseaux"> 
+          <li><a href="https://www.linkedin.com/" target="_blank"><img src="{% static "img/CINAPPS.gif" %}" alt="logo"></a></li>
+        </div>
+      </div>
+      <div class="burger-menu">
+        <!-- <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div> -->
+        <img src="{% static "img/carte-des-hamburgers.png" %}" alt="logo" class="burger">
+      </div>
+      <ul class="menu-items">
+        {% if user.is_authenticated %}
+          <li class="logg">Logged as: {{user.get_username}}</li>
+        {% endif %}
+        <li><a {% if request.path == url_home %} class="bg" {% endif %} href="{% url "home" %}">  Sorties de la semaine </a></li>
+        <li><a href="{% url "chiffre" %}">  Chiffre </a></li>
+        <li><a href="{% url "archive" %}">  Archive </a></li>
+        <div class="button">
+        {% if user.is_authenticated %}
+          <li>
+              <a href="{% url "logout" %}" style="color: #FFF; text-decoration: none;">Logout</a>
+          </li>
+        {% else %}
+          <li>
+              <a href="{% url "login" %}" style="color: #FFF; text-decoration: none;">Login</a>
+          </li>
+      {% endif %}
+      </div>
+      </ul>
+    </div>
+</nav>

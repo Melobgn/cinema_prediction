@@ -1,0 +1,5 @@
+itemadapter==0.8.0
+Scrapy==2.11.1
+scrapy-fake-useragent
+psycopg2-binary
+mysql-connector-python
