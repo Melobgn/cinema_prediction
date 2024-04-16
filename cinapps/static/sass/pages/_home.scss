@@ -1,0 +1,164 @@
+//a propos et evenements
+#home{
+    padding: 3% 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background-image: url('../img/joker_home.gif');
+    padding-top: 200px;
+
+    .home-des{
+        width: 30%;
+        height: 100%;
+        text-align: justify;
+        border: 4px solid rgb(52, 5, 1);
+        border-radius: 10px;
+        padding: 30px 20px 20px 100px;
+        background-color: rgb(243, 233, 204);
+        color: black;
+        box-shadow: inset 4em 1em rgb(240, 6, 6);
+
+        a{
+            color:  orange;
+            font-size: 30px;
+            &:hover{
+                color: orangered;
+            }
+        }
+        .home-title{
+            display: flex;
+            gap: 20px;
+        }
+    }
+    
+    #films{
+            background-color: rgb(243, 233, 204);
+            border: 4px solid rgb(52, 5, 1);
+            box-shadow: 10px 5px 5px rgb(240, 6, 6);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            width: 50%;
+
+            #films-title{
+                text-align: center;
+            }
+
+            #box-container{
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                
+                
+                  
+                    h1{
+                        text-align: center;
+                        font-size: 25px;
+                        text-transform: uppercase;
+                        color: rgb(185, 46, 0);
+                    }
+
+                    #box-films{
+                        max-height: 700px; /* Définissez la hauteur maximale souhaitée */
+                        overflow-y: auto; /* Active la barre de défilement verticale lorsque le contenu dépasse la hauteur maximale */
+                        overflow-x: hidden;
+                        border: 2px solid rgb(0, 0, 0);
+                        border-radius: 10px;
+                        background-color: rgb(241, 236, 215);
+                    }
+
+                
+                
+
+
+                .affiche {
+                    // margin-bottom: 10px;
+                    // display: flex;
+                    // flex-flow: row nowrap;
+                    display: grid;
+                    grid-template-columns: 200px 1fr;
+                    grid-template-rows: 200px;
+                    border: 1px rgba(0, 0, 0, 0.418) solid;
+                    border-radius: 20px;
+                    overflow: hidden;
+                    margin-left: 10px;
+                    margin-bottom: 10px;
+                    width: 95%;
+                    // height: 300px;
+                    transition: .5s;
+                    
+                    &:hover{
+                        grid-template-columns: 250px 1fr;
+                    }
+
+                }
+
+
+                .img-affiche {
+                    
+                    overflow: hidden;
+                    height: 350px;
+                    
+                    img {
+                    
+                        height: 200px;
+                        
+                    }
+
+                }
+
+                .content-affiche {
+                    position: relative;
+                    padding-bottom: 20px;
+                }
+
+                .title-affiche {
+                    padding-left: 10px;
+                    color: rgb(0, 0, 0);
+                }
+    
+                .des-affiche {
+                    width: 90%;
+                    bottom: 0;
+                    padding: 0px 20px 0px 10px;
+                    font-size: 15px;
+                    line-height: 30px;
+                    font-size: 700;
+                }
+
+            }
+
+    }
+   
+}
+
+// media queries 
+@media screen and (max-width: 1800px){
+    #home{
+        .home-des{
+            width: 65%;
+            margin-right: inherit;
+        }
+
+        #films{
+           
+            width: 70%;
+        }
+    }
+}
+
+@media screen and (max-width: 1300px){
+
+     
+    //home
+    #home{
+        .home-des{
+            padding: 30px 20px 20px 50px;
+            box-shadow: inset 2em 1em rgb(240, 6, 6);
+        }
+        #films{
+            width: 100%;
+        }
+    }
+}

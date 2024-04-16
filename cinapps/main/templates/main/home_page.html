@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+  <!-- home -->
+  <section id="home" class="parallax">
+    <div class="home-des">
+        <div class="home-title wow animated fadeInDown" data-wow-duration="1s" data-wow-delay="1s">
+            <img src="{% static "img/star.png" %}" alt="icon film">
+            <h1>SELECTION DE LA SEMAINE</h1>
+        </div>
+        <p class="wow animated bounceInRight" data-wow-duration="1s" data-wow-delay=".5s">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur possimus quaerat eveniet ratione, omnis qui nihil, fugit culpa rem ipsa autem accusamus deleniti labore commodi iusto amet! Obcaecati, explicabo sequi?
+    </div>
+    <div id="films">
+      <div id="films-title" class="wow animated zoomIn" data-wow-duration="1s" data-wow-delay="1s">
+          <img src="{% static "img/clap.png" %}" alt="icon film">
+          <h1>Classement des 10 meilleurs films de la semaine</h1>
+          <div class="content-title-underline"></div>
+      </div>
+      <div id="box-container">
+        <div class="box-content wow animated bounceInLeft">
+          <!--<h1>Classement des 10 meilleurs films de la semaine</h1>-->
+          <div id="box-films">
+            <figure class="affiche">
+              <div class="img-affiche"><img src="{% static "img/joker_home.gif" %}" alt="illustration"></div>
+              <div class="content-affiche">
+                  <h2 class="title-affiche">Titre film</h2>
+                  <p class="des-affiche">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam eveniet minus voluptatum necessitatibus! Recusandae veniam temporibus sed nihil quos ipsam maxime eos tempore odio quam, distinctio, illo voluptas architecto sint!</p>
+              </div>
+            </figure>
+            <figure class="affiche">
+              <div class="img-affiche"><img src="{% static "img/joker_home.gif" %}" alt="illustration"></div>
+              <div class="content-affiche">
+                  <h2 class="title-affiche">Titre film</h2>
+                  <p class="des-affiche">Synopsis</p>
+              </div>
+            </figure>
+            <figure class="affiche">
+              <div class="img-affiche"><img src="{% static "img/joker_home.gif" %}" alt="illustration"></div>
+              <div class="content-affiche">
+                  <h2 class="title-affiche">Titre film</h2>
+                  <p class="des-affiche">Synopsis</p>
+              </div>
+            </figure>
+            <figure class="affiche">
+              <div class="img-affiche"><img src="{% static "img/joker_home.gif" %}" alt="illustration"></div>
+              <div class="content-affiche">
+                  <h2 class="title-affiche">Titre film</h2>
+                  <p class="des-affiche">Synopsis</p>
+              </div>
+            </figure>
+            <figure class="affiche">
+              <div class="img-affiche"><img src="{% static "img/joker_home.gif" %}" alt="illustration"></div>
+              <div class="content-affiche">
+                  <h2 class="title-affiche">Titre film</h2>
+                  <p class="des-affiche">Synopsis</p>
+              </div>
+            </figure>
+            <figure class="affiche">
+              <div class="img-affiche"><img src="{% static "img/joker_home.gif" %}" alt="illustration"></div>
+              <div class="content-affiche">
+                  <h2 class="title-affiche">Titre film</h2>
+                  <p class="des-affiche">Synopsis</p>
+              </div>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static widget_tweaks %}
+
+{% block content %}
+
+<section id="archive_page">
+{% for film in films %}
+     <h2>{{ film.titre }}</h2>
+     <p>{{ film.date_sortie }}</p>
+     <p>{{ film.description }}</p>
+     <p>{{ film.entrees }}</p>
+     <p>{{ film.entrees_pred }}</p>
+     <img src="{{ film.image }}">
+{% endfor %}
+</section>
+
+{% endblock content %}
