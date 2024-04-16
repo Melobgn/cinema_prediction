@@ -1,0 +1,9 @@
+django<5
+django-dotenv<2
+django-livereload-server<1
+django-widget-tweaks<2
+requests<3
+whitenoise<7
+psycopg2-binary<3
+gunicorn
+mysql-connector-python
