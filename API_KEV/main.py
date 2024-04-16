@@ -1,10 +1,26 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .movie_prediction import predict_movie
+from movie_prediction import predict_movie
+from pydantic import BaseModel
+from movie_prediction import load_model
 
 # créeer une instance de FastAPI
 
 app = FastAPI()
+model=load_model()
+
+class FeaturesInput(BaseModel):
+    budget:float
+    compositeur: str
+    date: str
+    franchise: str
+    genre: str
+    pays: str
+    producteur: str
+    remake: str
+    titre: str
+    season: str
+    coeff_studio: int
 
 ## Middleware CORS pour permettre les requêtes depuis n'importe quel domaine (à adapter selon vos besoins)
 
