@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .functions import multiplicate_by_5
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import os
@@ -40,3 +40,19 @@ def archive_page(request):
         # Gérez cette erreur en conséquence dans votre vue
 
     return render(request, "main/archive_page.html")
+
+
+@login_required
+def get_films(conn):
+    try:
+        cursor = conn.cursor(dictionary = True) #pour mettre les resultats de requetes sql sous forme de dico
+        cursor.execute('''SELECT  titre, budget, genre, pays, producteur, realisateur, compositeur, studio,date, season, remake, franchise
+                       FROM 
+                       WHERE is_pred = 0
+                       ORDER BY date_sortie DESC''')
+        films = cursor.fetchall()
+        cursor.close()
+        return JsonResponse({'films': films})
+    except mysql.connector.Error as e:
+        print(f"Erreur SQL : {e}")
+        return None
