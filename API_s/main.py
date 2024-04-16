@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-#from model_utils import load_model, prediction
-import pandas as pd
+from model_utils import load_model, prediction
 
-app = FastApi()
+app = FastAPI()
 model=load_model()
 
 
@@ -19,13 +18,12 @@ class FeaturesInput(BaseModel):
     titre: str
     season: str
     coeff_studio: int
-    #scoring_acteurs_realisateur: float #donnée indisponible mais est calculée avec 
     
 
 class PredictionOutput(BaseModel):
     prediction: int
 
-
+@app.post('/prediction/')
 def prediction_root(feature_input: FeaturesInput):
     F1 = feature_input.budget
     F2 = feature_input.compositeur
@@ -38,7 +36,7 @@ def prediction_root(feature_input: FeaturesInput):
     F9 = feature_input.titre
     F10 = feature_input.season
     F11 = feature_input.coeff_studio
-    F12 = feature_input.scoring_acteurs_realisateur
+    #F12 = feature_input.scoring_acteurs_realisateur
 
     prediction = model.prediction(model, [[F1, F2, F3, F4, F5, F6, F7, F8]])
 
