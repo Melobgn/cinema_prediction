@@ -1,0 +1,1 @@
+0 11 * * 1 /app/start_spider.sh >> /var/log/cron.log 2>&1

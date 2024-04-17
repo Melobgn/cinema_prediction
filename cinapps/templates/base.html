@@ -1,0 +1,35 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CINAPPS</title>
+    <link rel="stylesheet" href="{% static "sass/main.css" %}">
+</head>
+<body>
+    {% include "includes/header.html" %}
+    {% block content %}{% endblock content %}
+    {% include "includes/footer.html" %}
+
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- wow  -->
+    <script src="{% static "js/vendor/wow/wow.min.js" %}"></script>
+
+    <!-- owl carousel JS -->
+    <script src="{% static "js/owl-carousel/owl.carousel.min.js" %}"></script> 
+
+    <!-- easing JS -->
+    <script src="{% static "js/easing/jquery.easing.1.3.js" %}"></script> 
+
+    <!-- script js de melo -->
+    <script src="{% static "js/meloscript.js" %}"></script>
+
+    <!-- script js de debo -->
+    <script src="{% static "js/debscript.js" %}"></script>
+</body>
+</html>
