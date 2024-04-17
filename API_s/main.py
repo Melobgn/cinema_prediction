@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from model_utils import load_model, prediction
+import pandas as pd
 
 app = FastAPI()
 model=load_model()
@@ -8,39 +9,38 @@ model=load_model()
 
 class FeaturesInput(BaseModel):
     budget:float
-    compositeur: str
-    date: str
+    duree: int
     franchise: str
     genre: str
     pays: str
-    producteur: str
     remake: str
-    titre: str
-    season: str
+    salles_premiere_semaine: int
+    scoring_acteurs_realisateurs: float
     coeff_studio: int
+    year: int
+
     
 
 class PredictionOutput(BaseModel):
-    prediction: int
+    prediction: float
 
 @app.post('/prediction/')
 def prediction_root(feature_input: FeaturesInput):
     F1 = feature_input.budget
-    F2 = feature_input.compositeur
-    F3 = feature_input.date
-    F4 = feature_input.franchise
-    F5 = feature_input.genre
-    F6 = feature_input.pays
-    F7 = feature_input.producteur
-    F8 = feature_input.remake
-    F9 = feature_input.titre
-    F10 = feature_input.season
-    F11 = feature_input.coeff_studio
-    #F12 = feature_input.scoring_acteurs_realisateur
+    F2 = feature_input.duree
+    F3 = feature_input.franchise
+    F4 = feature_input.genre
+    F5 = feature_input.pays
+    F6 = feature_input.remake
+    F7 = feature_input.salles_premiere_semaine
+    F8 = feature_input.scoring_acteurs_realisateurs
+    F9 = feature_input.coeff_studio
+    F10 = feature_input.year
 
-    prediction = model.prediction(model, [[F1, F2, F3, F4, F5, F6, F7, F8]])
+    data = pd.DataFrame([[F1, F2, F3, F4, F5, F6, F7, F8, F9, F10]], columns=['budget', 'duree', 'franchise', 'genre', 'pays', 'remake', 'salles_premiere_semaine', 'scoring_acteurs_realisateurs', 'coeff_studio', 'year'])
+    predictions = model.predict(data)
 
-    return PredictionOutput(prediction=prediction)
+    return PredictionOutput(prediction=predictions)
 
 # actors = pd.read_csv('acteurs.csv')
 
