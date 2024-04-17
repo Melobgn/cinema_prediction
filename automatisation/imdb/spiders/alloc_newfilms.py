@@ -1,28 +1,15 @@
 import scrapy
 from imdb.items import AllocFilmsItem
 import datetime
+
 class AllocNewfilmsSpider(scrapy.Spider):
     name = "alloc_newfilms"
     allowed_domains = ["www.allocine.fr"]
-
     
     def start_requests(self):
         today = datetime.date.today()
-        # Prochain mercredi
-        next_wednesday = today + datetime.timedelta((2 - today.weekday() + 7) % 7)
-        # Mercredi précédent
-        last_wednesday = today - datetime.timedelta((today.weekday() - 2 + 7) % 7)
-
-        next_wednesday_str = next_wednesday.strftime('%Y-%m-%d')
-        last_wednesday_str = last_wednesday.strftime('%Y-%m-%d')
-
-        # URL pour les films de la semaine en cours
-        url_next = f"https://www.allocine.fr/film/agenda/sem-{next_wednesday_str}/"
-        # URL pour les films de la semaine précédente
-        url_last = f"https://www.allocine.fr/film/agenda/sem-{last_wednesday_str}/"
-
-        yield scrapy.Request(url=url_next, callback=self.parse)
-        yield scrapy.Request(url=url_last, callback=self.parse)
+        start_url = f"https://www.allocine.fr/film/agenda/sem-{today.isoformat()}/"
+        yield scrapy.Request(url=start_url, callback=self.parse)
         
     #fonction doit s'occuper de parcourir la liste des produits sur chaque page et de suivre le lien de chaque produit
     #pour obtenir plus de détails.
