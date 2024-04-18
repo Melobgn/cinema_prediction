@@ -58,7 +58,7 @@ def get_predictions(films):
         response = requests.post(url, json=data, headers=headers)
         if response.status_code == 200:
             prediction = response.json()
-            film['prediction_entrees'] = prediction['prediction']
+            film['prediction_entrees'] = int(prediction['prediction'])
             #print(f"************************************{film['prediction_entrees']}")
         else:
             film['prediction_entrees'] = f'Erreur de prédiction: {response.status_code} - {response.text}'

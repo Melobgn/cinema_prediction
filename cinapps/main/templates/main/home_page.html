@@ -27,7 +27,8 @@
               <div class="img-affiche"><img src={{film.image}} alt="illustration"></div>
               <div class="content-affiche">
                   <h2 class="title-affiche">{{ film.titre }}</h2>
-                  <p class="des-affiche">{{ film.prediction_entrees }}</p>
+                  <p class="des-affiche">prédiction des entrées de la première semaine : <span class="pred_affiche">{{ film.prediction_entrees }}</span></p>
+                  <p class="button">Voir plus d'informations sur ce film<p>
               </div>
             </figure>
             {% endfor %}
