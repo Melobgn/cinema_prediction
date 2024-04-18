@@ -1,5 +1,5 @@
 Flask
-scikit-learn
+scikit-learn==1.4.2
 catboost
 itemadapter==0.8.0
 Scrapy==2.11.1
