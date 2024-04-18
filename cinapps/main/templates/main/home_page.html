@@ -22,48 +22,15 @@
         <div class="box-content wow animated bounceInLeft">
           <!--<h1>Classement des 10 meilleurs films de la semaine</h1>-->
           <div id="box-films">
+            {% for film in films %}
             <figure class="affiche">
-              <div class="img-affiche"><img src="{% static "img/joker_home.gif" %}" alt="illustration"></div>
+              <div class="img-affiche"><img src={{film.image}} alt="illustration"></div>
               <div class="content-affiche">
-                  <h2 class="title-affiche">Titre film</h2>
-                  <p class="des-affiche">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam eveniet minus voluptatum necessitatibus! Recusandae veniam temporibus sed nihil quos ipsam maxime eos tempore odio quam, distinctio, illo voluptas architecto sint!</p>
+                  <h2 class="title-affiche">{{ film.titre }}</h2>
+                  <p class="des-affiche">{{ film.description }}</p>
               </div>
             </figure>
-            <figure class="affiche">
-              <div class="img-affiche"><img src="{% static "img/joker_home.gif" %}" alt="illustration"></div>
-              <div class="content-affiche">
-                  <h2 class="title-affiche">Titre film</h2>
-                  <p class="des-affiche">Synopsis</p>
-              </div>
-            </figure>
-            <figure class="affiche">
-              <div class="img-affiche"><img src="{% static "img/joker_home.gif" %}" alt="illustration"></div>
-              <div class="content-affiche">
-                  <h2 class="title-affiche">Titre film</h2>
-                  <p class="des-affiche">Synopsis</p>
-              </div>
-            </figure>
-            <figure class="affiche">
-              <div class="img-affiche"><img src="{% static "img/joker_home.gif" %}" alt="illustration"></div>
-              <div class="content-affiche">
-                  <h2 class="title-affiche">Titre film</h2>
-                  <p class="des-affiche">Synopsis</p>
-              </div>
-            </figure>
-            <figure class="affiche">
-              <div class="img-affiche"><img src="{% static "img/joker_home.gif" %}" alt="illustration"></div>
-              <div class="content-affiche">
-                  <h2 class="title-affiche">Titre film</h2>
-                  <p class="des-affiche">Synopsis</p>
-              </div>
-            </figure>
-            <figure class="affiche">
-              <div class="img-affiche"><img src="{% static "img/joker_home.gif" %}" alt="illustration"></div>
-              <div class="content-affiche">
-                  <h2 class="title-affiche">Titre film</h2>
-                  <p class="des-affiche">Synopsis</p>
-              </div>
-            </figure>
+            {% endfor %}
           </div>
         </div>
       </div>
