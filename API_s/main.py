@@ -15,11 +15,30 @@ class FeaturesInput(BaseModel):
     pays: str
     #remake: str
     salles_premiere_semaine: int
-    scoring_acteurs_realisateurs: float
+    #scoring_acteurs_realisateurs: float
     coeff_studio: int
     year: int
 
+
+#definir le champs 'score_acteurs_realisateurs' à l'aide du casting
+actors = pd.read_csv('acteurs.csv')
+
+def calcul_score_acteurs_realisateurs(casting: FeaturesInput, realisateur: FeaturesInput):
+    score_total = 0
+    casting = list(casting.split(", ")) 
     
+    for i in range (len(casting)): 
+        if casting[i] in actors['name'].values: #si acteur[indice] se trouve dans la colonne 'name' du dataframe 'acteurs'
+            score_acteur = actors.loc[actors['name'] == casting[i], 'coef_poids'].values[0]  # Récupérer le poids de l'acteur
+            score_total += score_acteur  # Multiplie le score de l'acteur par la valeur présente dans score_total
+
+    if realisateur in actors['name'].values:
+        score_realisateur = actors.loc[actors['name'] == realisateur, 'coef_score'].values[0]
+        score_total += score_realisateur
+
+    return score_total
+
+
 
 class PredictionOutput(BaseModel):
     prediction: float
@@ -33,33 +52,21 @@ def prediction_root(feature_input: FeaturesInput):
     F5 = feature_input.pays
     #F6 = feature_input.remake
     F7 = feature_input.salles_premiere_semaine
-    F8 = feature_input.scoring_acteurs_realisateurs
     F9 = feature_input.coeff_studio
     F10 = feature_input.year
+
+    #calcul du score des acteurs_realisateurs à partir de la colonne 'casting' et 'realisateur'
+    F8 = calcul_score_acteurs_realisateurs(feature_input.casting, feature_input.realisateur)
 
     data = pd.DataFrame([[F1, F2, F4, F5, F7, F8, F9, F10]], columns=['budget', 'duree', 'genre', 'pays', 'salles_premiere_semaine', 'scoring_acteurs_realisateurs', 'coeff_studio', 'year'])
     predictions = model.predict(data)
 
     return PredictionOutput(prediction=predictions)
 
-# actors = pd.read_csv('acteurs.csv')
 
-# def calcul_poids_total(casting: FeaturesInput, realisateur: FeaturesInput):
-#     poids_total = 0
-#     casting = list(casting.split(", ")) 
-    
-#     for i in range (len(casting)): 
-#         if casting[i] in actors['name'].values: #si acteur[indice] se trouve dans la colonne 'name' du dataframe 'acteurs'
-#             poids_acteur = actors.loc[actors['name'] == casting[i], 'coef_poids'].values[0]  # Récupérer le poids de l'acteur
-#             poids_total += poids_acteur  # Multiplie le poids de l'acteur par la valeur présente dans poids_total
 
-#     if realisateur in actors['name'].values:
-#         poids_realisateur = actors.loc[actors['name'] == realisateur, 'coef_poids'].values[0]
-#         poids_total += poids_realisateur
-
-#     return poids_total
 
 # #route api pour effectuer calcul et renvoyer le résultat
 # @app.post("/prediction/")
 # async def prediction (data: FeaturesInput):
-#     score_acteurs_realisateur = calcul_poids_total(data)
+#     score_acteurs_realisateur = calcul_score_total(data)
