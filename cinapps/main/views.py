@@ -29,7 +29,10 @@ def home_page(request):
             # Trier les films par prédiction d'entrées dans l'ordre décroissant
             films_sorted = sorted(films, key=lambda x: x.get('prediction_entrees', 0), reverse=True)
 
-            return render(request, "main/home_page.html", {"films": films_sorted})
+             # Sélectionner uniquement les dix meilleurs films
+            top_ten_films = films_sorted[:10]
+
+            return render(request, "main/home_page.html", {"films": top_ten_films})
         except mysql.connector.Error as e:
             print(f"Erreur lors de l'exécution de la requête SQL: {e}")
             return render(request, 'main/home_page.html', {"error": str(e)})

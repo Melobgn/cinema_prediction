@@ -20,3 +20,7 @@ $(function(){
 // on peut rajouter des attributs comme le delay ou la durée
 
 // exemple d'utilisation avec les deux ensembles : <h1 class="wow animated bounceInRight" data-wow-duration="1s" data-wow-delay="1s">TITRE 1 exemple</h1>
+
+
+
+

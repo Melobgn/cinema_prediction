@@ -27,8 +27,11 @@
               <div class="img-affiche"><img src={{film.image}} alt="illustration"></div>
               <div class="content-affiche">
                   <h2 class="title-affiche">{{ film.titre }}</h2>
-                  <p class="des-affiche">prédiction des entrées de la première semaine : <span class="pred_affiche">{{ film.prediction_entrees }}</span></p>
-                  <p class="button">Voir plus d'informations sur ce film<p>
+                  <p class="des-affiche">Entrées estimées en France : <span class="pred_affiche">{{ film.prediction_entrees }}</span></p>
+                  <p class="des-affiche">Entrées estimées pour le cinéma : <span class="pred_affiche">pred/2000</span></p>
+                  <p class="des-affiche">Recette hebdomadaire : <span class="pred_affiche">*10</span></p>
+                  <p class="des-affiche">Audience quotidienne : <span class="pred_affiche">pred/2000/7</span></p>
+                  <div class="content-title-underline2"></div>
               </div>
             </figure>
             {% endfor %}

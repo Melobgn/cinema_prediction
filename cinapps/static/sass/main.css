@@ -48,7 +48,7 @@ html, body {
   width: 50px;
   height: 4px;
   background-color: rgb(221, 72, 72);
-  margin-bottom: 30px;
+  margin: 50px 0;
 }
 
 .parallax {
@@ -62,6 +62,18 @@ h1 {
   text-transform: uppercase;
   font-family: "Pixelify", sans-serif;
   font-size: 25px;
+}
+
+.btn_red {
+  margin-top: 60px;
+  margin-left: 50px;
+  background-color: rgb(240, 6, 6);
+  color: white;
+  padding: 3px;
+}
+.btn_red:hover {
+  background-color: black;
+  cursor: pointer;
 }
 
 .button {
@@ -357,7 +369,7 @@ li {
 }
 #home #films #box-container .affiche {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 400px 1fr;
   grid-template-rows: 200px;
   border: 1px rgba(0, 0, 0, 0.418) solid;
   border-radius: 20px;
@@ -368,14 +380,20 @@ li {
   transition: 0.5s;
 }
 #home #films #box-container .affiche:hover {
-  grid-template-columns: 250px 1fr;
+  grid-template-columns: 300px 1fr;
+  cursor: pointer;
+  grid-template-rows: 700px;
 }
 #home #films #box-container .img-affiche {
   overflow: hidden;
   height: 350px;
 }
 #home #films #box-container .img-affiche img {
-  height: 200px;
+  height: 300px;
+}
+#home #films #box-container .pred_affiche {
+  color: orangered;
+  font-weight: bold;
 }
 #home #films #box-container .content-affiche {
   position: relative;
