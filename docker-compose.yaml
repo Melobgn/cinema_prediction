@@ -1,0 +1,26 @@
+version: '3.9'
+services:
+  web:
+    depends_on:
+      - cron_job
+      - fastapi_sba
+    ports:
+      - 8000:8000
+    env_file:
+      - cinapps/.env
+    build:
+      context: ./cinapps/   # Chemin ajusté pour correspondre au nom de l'application
+      dockerfile: Dockerfile
+    volumes:
+      - ./cinapps/:/app/
+  cron_job:
+    image: cron   # Nom de votre image Docker pour le cron job
+    # Ajoutez d'autres configurations nécessaires pour votre cron job ici
+    # Par exemple, montez les fichiers de configuration, définissez des variables d'environnement, etc.
+  fastapi_sba:
+    ports:
+      - 8002:8002
+    build:
+      context: ./fastapi_sba/
+      dockerfile: Dockerfile
+    image: api   # Nom de votre image Docker pour FastAPI
