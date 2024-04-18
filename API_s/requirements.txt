@@ -1,0 +1,5 @@
+scikit-learn==1.4.2
+fastapi<1
+uvicorn<1
+requests
+pandas
