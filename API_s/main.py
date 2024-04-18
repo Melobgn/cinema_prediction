@@ -10,10 +10,10 @@ model=load_model()
 class FeaturesInput(BaseModel):
     budget:float
     duree: int
-    franchise: str
+    #franchise: str
     genre: str
     pays: str
-    remake: str
+    #remake: str
     salles_premiere_semaine: int
     scoring_acteurs_realisateurs: float
     coeff_studio: int
@@ -28,16 +28,16 @@ class PredictionOutput(BaseModel):
 def prediction_root(feature_input: FeaturesInput):
     F1 = feature_input.budget
     F2 = feature_input.duree
-    F3 = feature_input.franchise
+    #F3 = feature_input.franchise
     F4 = feature_input.genre
     F5 = feature_input.pays
-    F6 = feature_input.remake
+    #F6 = feature_input.remake
     F7 = feature_input.salles_premiere_semaine
     F8 = feature_input.scoring_acteurs_realisateurs
     F9 = feature_input.coeff_studio
     F10 = feature_input.year
 
-    data = pd.DataFrame([[F1, F2, F3, F4, F5, F6, F7, F8, F9, F10]], columns=['budget', 'duree', 'franchise', 'genre', 'pays', 'remake', 'salles_premiere_semaine', 'scoring_acteurs_realisateurs', 'coeff_studio', 'year'])
+    data = pd.DataFrame([[F1, F2, F4, F5, F7, F8, F9, F10]], columns=['budget', 'duree', 'genre', 'pays', 'salles_premiere_semaine', 'scoring_acteurs_realisateurs', 'coeff_studio', 'year'])
     predictions = model.predict(data)
 
     return PredictionOutput(prediction=predictions)
