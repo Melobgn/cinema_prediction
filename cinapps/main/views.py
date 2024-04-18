@@ -39,7 +39,7 @@ def home_page(request):
 
 
 def get_predictions(films):
-    url = 'http://localhost:8000/prediction'  # Ajustez l'URL si nécessaire
+    url = os.getenv('URL_API') # Ajustez l'URL si nécessaire
     headers = {'Content-Type': 'application/json'}
 
     # Prépare les données pour l'API
