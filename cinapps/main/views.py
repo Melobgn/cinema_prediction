@@ -10,6 +10,29 @@ import mysql.connector
 from .database import connect_to_azure_mysql
 import requests
 from datetime import datetime, timedelta
+import pandas as pd
+
+#definir le champs 'score_acteurs_realisateurs' à l'aide du casting
+base_dir = os.path.dirname(os.path.abspath(__file__)) #avoir le repertoire parent de views.py
+file_path = os.path.join(base_dir, 'acteurs.csv') #chemin vers csv acteurs
+
+actors = pd.read_csv(file_path) #lire fichier avec pandas
+
+def calcul_score_acteurs_realisateurs(casting, realisateur):
+    score_total = 0
+    casting = list(casting.split(", ")) 
+    
+    for i in range (len(casting)): 
+        if casting[i] in actors['name'].values: #si acteur[indice] se trouve dans la colonne 'name' du dataframe 'acteurs'
+            score_acteur = actors.loc[actors['name'] == casting[i], 'coef_poids'].values[0]  # Récupérer le poids de l'acteur
+            score_total += score_acteur  # Multiplie le score de l'acteur par la valeur présente dans score_total
+
+    if realisateur in actors['name'].values:
+        score_realisateur = actors.loc[actors['name'] == realisateur, 'coef_score'].values[0]
+        score_total += score_realisateur
+
+    return score_total
+
 
 @login_required
 def home_page(request):
@@ -39,19 +62,19 @@ def home_page(request):
 
 
 def get_predictions(films):
-    url = os.getenv('URL_API') # Ajustez l'URL si nécessaire
+    url = 'http://localhost:8000/prediction'  # Ajustez l'URL si nécessaire
     headers = {'Content-Type': 'application/json'}
 
     # Prépare les données pour l'API
     for film in films:
-        #print(film)
+        print(film)
         data = {
             'budget': film['budget'] if film['budget'] is not None else 25000000,  # Médiane pour le budget
             'duree': film['duree'] if film['duree'] is not None else 107,  # Médiane pour la durée
             'genre': film['genre'] if film['genre'] is not None else 'missing',
             'pays': film['pays'] if film['pays'] is not None else 'missing',
             'salles_premiere_semaine': film['salles'] if film['salles'] is not None else None,  # Assumez une médiane ou laissez None si géré côté API
-            'scoring_acteurs_realisateurs': 1,  # Valeur fixe
+            'scoring_acteurs_realisateurs': calcul_score_acteurs_realisateurs(film['acteurs'], film['réalisateur']),  # Valeur fixe
             'coeff_studio': 1,  # Valeur fixe
             'year': film['date_sortie'].year if film['date_sortie'] and film['date_sortie'].year else None  # Assumez une médiane ou laissez None si géré côté API
         }
@@ -59,7 +82,7 @@ def get_predictions(films):
         if response.status_code == 200:
             prediction = response.json()
             film['prediction_entrees'] = prediction['prediction']
-            #print(f"************************************{film['prediction_entrees']}")
+            print(f"************************************{film['prediction_entrees']}")
         else:
             film['prediction_entrees'] = f'Erreur de prédiction: {response.status_code} - {response.text}'
     return films
