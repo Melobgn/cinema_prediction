@@ -11,4 +11,10 @@ class User(AbstractUser):
 
 #stocker les informations de l'api en bdd
 class PredApi(models.Model):
+    titre = models.CharField(max_length=100)  
+    prediction = models.FloatField()          
+    date = models.DateField()
+
+    def __str__(self):
+        return self.titre
     pass

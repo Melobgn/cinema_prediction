@@ -19,26 +19,29 @@ def home_page(request):
         try:
             cursor = conn.cursor(dictionary=True)
             date_semaine = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
-            query = "SELECT titre, description, image, date_sortie, genre, salles, pays, duree, budget FROM films WHERE date_sortie >= %s"
+            query = "SELECT titre, description, image, date_sortie, genre, salles, pays, studio, duree, budget FROM films WHERE date_sortie >= %s"
             cursor.execute(query, (date_semaine,))
             films = cursor.fetchall()
 
             #boucle de pred pour chaque film 
             for film in films:
+                print('VOICI UN FILM DE FILMS********', film)
                 if 'budget' in film:
-                    prediction = fetch_prediction_film(film)
+                    prediction = get_predictions(film)
                     if prediction:
                         film['prediction'] = prediction
                     else:
                         film['prediction'] = None
                 else: 
                     film['prediction'] = None
+                print("######PREDICTION DU FILM", prediction)
 
             cursor.close()
             conn.close()
 
             # Obtention des prédictions pour chaque film
-            films = get_predictions(films)
+            #films = get_predictions(films)
+
             # Trier les films par prédiction d'entrées dans l'ordre décroissant
             films_sorted = sorted(films, key=lambda x: x.get('prediction_entrees', 0), reverse=True)
 
@@ -113,24 +116,30 @@ def scoring_casting(personnes):
 def get_predictions(film):
     url = os.getenv('URL_API') # Ajustez l'URL si nécessaire
     headers = {'Content-Type': 'application/json'}
+    print('****',type(film))
+    #film = json.loads(film)
     payload = {
-        'budget': film['budget'],
-        'duree': film['duree'],
-        'genre': film['genre'],
+        'budget': film.get('budget'),
+        'duree': film.get('duree'),
+        'genre': film.get('genre'),
         'pays': film['pays'],
         'salles_premiere_semaine': film['salles'],
         'coeff_studio': get_studio_coefficient(film['studio']),
-        'year': film['year']
+        'year': film['date_sortie'].year
     }
-    response = requests.post(api_url, json=payload)
+    print('**************', payload)
+    print('$$$$$$$$ BUDGET', film['budget'])
+    response = requests.post(url, json=payload)
 
     if response.status_code == 200:
         prediction = response.json()
+        print('**********prediction', prediction)
+
         return prediction
     else:
         print(f"Echec de la requete à l'api: {response.status_code}")
         return None
-    
+
     # Prépare les données pour l'API
     # for film in films:
     #     #print(film)
