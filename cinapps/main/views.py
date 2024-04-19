@@ -18,7 +18,7 @@ def home_page(request):
         try:
             cursor = conn.cursor(dictionary=True)
             date_semaine = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
-            query = "SELECT titre, description, image, date_sortie, genre, salles, pays, duree, budget FROM films WHERE date_sortie >= %s"
+            query = "SELECT titre, studio, description, image, date_sortie, genre, salles, pays, duree, budget FROM films WHERE date_sortie >= %s"
             cursor.execute(query, (date_semaine,))
             films = cursor.fetchall()
             cursor.close()
@@ -28,11 +28,14 @@ def home_page(request):
             films = get_predictions(films)
             # Trier les films par prédiction d'entrées dans l'ordre décroissant
             films_sorted = sorted(films, key=lambda x: x.get('prediction_entrees', 0), reverse=True)
-
+            
              # Sélectionner uniquement les dix meilleurs films
             top_ten_films = films_sorted[:10]
-
-            return render(request, "main/home_page.html", {"films": top_ten_films})
+            
+            # Sélectionner uniquement les deux premiers
+            top_two_films = films_sorted[:2]
+            
+            return render(request, "main/home_page.html", {"films": top_ten_films, "top_two": top_two_films})
         except mysql.connector.Error as e:
             print(f"Erreur lors de l'exécution de la requête SQL: {e}")
             return render(request, 'main/home_page.html', {"error": str(e)})

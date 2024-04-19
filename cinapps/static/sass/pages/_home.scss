@@ -30,6 +30,18 @@
             display: flex;
             gap: 20px;
         }
+
+        .salles_dispo{
+            display: flex;
+            justify-content: space-around;
+            color: orangered;
+        }
+        .top_films{
+            display: flex;
+            img{
+                width: 50%;
+            }
+        }
     }
     
     #films{
@@ -77,7 +89,7 @@
                     // display: flex;
                     // flex-flow: row nowrap;
                     display: grid;
-                    grid-template-columns: 400px 1fr;
+                    grid-template-columns: 500px 1fr;
                     grid-template-rows: 200px;
                     border: 1px rgba(0, 0, 0, 0.418) solid;
                     border-radius: 20px;
@@ -89,7 +101,7 @@
                     transition: .5s;
                     
                     &:hover{
-                        grid-template-columns: 300px 1fr;
+                        grid-template-columns: 350px 1fr;
                         cursor: pointer;
                         grid-template-rows: 700px;
                     }
@@ -100,11 +112,11 @@
                 .img-affiche {
                     
                     overflow: hidden;
-                    height: 350px;
+                    //height: 400px;
                     
                     img {
                     
-                        height: 300px;
+                        height: 400px;
                         
                     }
 
@@ -165,6 +177,15 @@
         }
         #films{
             width: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 1000px){
+    #home #films #box-container .affiche {
+        grid-template-columns: 150px 1fr !important;
+        img{
+            height: 200px;
         }
     }
 }
