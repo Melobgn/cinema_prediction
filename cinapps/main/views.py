@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .functions import multiplicate_by_5
+from .functions import get_directors_by_film, get_actors_by_film
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from requests import Request, Session
@@ -18,9 +18,17 @@ def home_page(request):
         try:
             cursor = conn.cursor(dictionary=True)
             date_semaine = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
-            query = "SELECT titre, studio, description, image, film_url, date_sortie, genre, salles, pays, duree, budget FROM films WHERE date_sortie >= %s"
+            query = "SELECT id_film, titre, studio, description, image, film_url, date_sortie, genre, salles, pays, duree, budget FROM films WHERE date_sortie >= %s"
             cursor.execute(query, (date_semaine,))
             films = cursor.fetchall()
+
+
+            # Ajouter les acteurs et réalisateurs à chaque film
+            for film in films:
+                film['acteurs'] = [actor['nom'] for actor in get_actors_by_film(conn, film['id_film'])]
+                film['realisateurs'] = [director['nom'] for director in get_directors_by_film(conn, film['id_film'])]
+
+
             cursor.close()
             conn.close()
 

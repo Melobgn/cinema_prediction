@@ -56,8 +56,8 @@
                   <p class="des-affiche">Entrées estimées en France : <span class="pred_affiche">{{ film.prediction_entrees }}</span></p>
                   <p class="des-affiche">Entrées estimées dans le cinéma : <span class="pred_affiche">{{ film.estimation_entrees_cinema }}</span></p>
                   <div class="content-title-underline2"></div>
-                  <p class="des-affiche">Réalisateur : <span class="pred_affiche">James Cameron</span></p>
-                  <p class="des-affiche">Acteurs : <span class="pred_affiche">Keanu Reeves, Henry Cavill</span></p>
+                  <p class="des-affiche">Réalisateur : <span class="pred_affiche">{{ film.realisateurs|join:", " }}</span></p>
+                  <p class="des-affiche">Acteurs : <span class="pred_affiche">{{ film.acteurs|join:", " }}</span></p>
                   <p class="des-affiche">Distributeur : <span class="pred_affiche">{{ film.studio }}</span></p>
                   <p class="des-affiche">Genre : <span class="pred_affiche">{{ film.genre }}</span></p>
                   <p class="des-affiche">Durée : <span class="pred_affiche">{{ film.duree }} minutes</span></p>
