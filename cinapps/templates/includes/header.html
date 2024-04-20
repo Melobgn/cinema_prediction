@@ -4,7 +4,7 @@
     <div class="navbar-container animated zoomIn" data-wow-duration="1s" data-wow-delay="1s">
       <div class="img-nav">
         <div class="nav_link_reseaux"> 
-          <li><a href="https://www.linkedin.com/" target="_blank"><img src="{% static "img/CINAPPS.gif" %}" alt="logo"></a></li>
+          <li><a href="https://www.allocine.fr/" target="_blank"><img class="logo_header" src="{% static "img/CINAPPS.gif" %}" alt="logo"></a></li>
         </div>
       </div>
       <div class="burger-menu">
@@ -19,7 +19,6 @@
         {% endif %}
         <li><a {% if request.path == url_home %} class="bg" {% endif %} href="{% url "home" %}">  Sorties de la semaine </a></li>
         <li><a href="{% url "chiffre" %}">  Chiffre </a></li>
-        <li><a href="{% url "archive" %}">  Archive </a></li>
         <div class="button">
         {% if user.is_authenticated %}
           <li>

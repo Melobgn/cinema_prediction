@@ -115,8 +115,8 @@ nav {
   padding-left: 3%;
 }
 
-a img {
-  width: 150px;
+.logo_header {
+  width: 180px;
 }
 
 .burger-menu {
@@ -155,7 +155,7 @@ a img {
   text-decoration: none;
   color: rgb(236, 236, 236);
   font-weight: bold;
-  font-size: 20px;
+  font-size: 24px;
 }
 .menu-items li a:hover {
   color: rgb(248, 212, 5);
@@ -314,6 +314,10 @@ li {
   background-image: url("../img/joker_home.gif");
   padding-top: 200px;
 }
+#home .pred_affiche {
+  color: orangered;
+  font-weight: bold;
+}
 #home .home-des {
   width: 30%;
   height: 100%;
@@ -343,9 +347,18 @@ li {
 }
 #home .home-des .top_films {
   display: flex;
+  justify-content: space-around;
 }
-#home .home-des .top_films img {
-  width: 50%;
+#home .home-des .top_films a img {
+  width: 100%;
+}
+#home .chiffre_affaires {
+  text-align: center;
+  padding-top: 15px;
+}
+#home .chiffre_affaires h1 {
+  background-color: rgb(240, 6, 6);
+  color: gold;
 }
 #home #films {
   background-color: rgb(243, 233, 204);
@@ -401,10 +414,6 @@ li {
 #home #films #box-container .img-affiche img {
   height: 400px;
 }
-#home #films #box-container .pred_affiche {
-  color: orangered;
-  font-weight: bold;
-}
 #home #films #box-container .content-affiche {
   position: relative;
   padding-bottom: 20px;
@@ -424,17 +433,18 @@ li {
 
 @media screen and (max-width: 1800px) {
   #home .home-des {
-    width: 65%;
+    width: 75%;
     margin-right: inherit;
   }
   #home #films {
-    width: 70%;
+    width: 80%;
   }
 }
 @media screen and (max-width: 1300px) {
   #home .home-des {
     padding: 30px 20px 20px 50px;
     box-shadow: inset 2em 1em rgb(240, 6, 6);
+    width: 100%;
   }
   #home #films {
     width: 100%;

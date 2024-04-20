@@ -18,7 +18,7 @@ def home_page(request):
         try:
             cursor = conn.cursor(dictionary=True)
             date_semaine = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
-            query = "SELECT titre, studio, description, image, date_sortie, genre, salles, pays, duree, budget FROM films WHERE date_sortie >= %s"
+            query = "SELECT titre, studio, description, image, film_url, date_sortie, genre, salles, pays, duree, budget FROM films WHERE date_sortie >= %s"
             cursor.execute(query, (date_semaine,))
             films = cursor.fetchall()
             cursor.close()
@@ -35,7 +35,18 @@ def home_page(request):
             # Sélectionner uniquement les deux premiers
             top_two_films = films_sorted[:2]
             
-            return render(request, "main/home_page.html", {"films": top_ten_films, "top_two": top_two_films})
+            #chiffre d'affaire
+            ch_affaires = sum(film['estimation_recette_hebdo'] for film in top_two_films)
+            charge = 4900
+            benefice = ch_affaires - charge
+
+            tab_result = {
+                'ch_affaires':ch_affaires,
+                'charge':charge,
+                'benefice': benefice
+            }
+
+            return render(request, "main/home_page.html", {"films": top_ten_films, "top_two": top_two_films, "tab_result":tab_result})
         except mysql.connector.Error as e:
             print(f"Erreur lors de l'exécution de la requête SQL: {e}")
             return render(request, 'main/home_page.html', {"error": str(e)})
@@ -64,7 +75,10 @@ def get_predictions(films):
         response = requests.post(url, json=data, headers=headers)
         if response.status_code == 200:
             prediction = response.json()
-            film['prediction_entrees'] = int(prediction['prediction'])
+            film['prediction_entrees'] = int(prediction['prediction']) #stock la prediction
+            film['estimation_entrees_cinema'] = int(film['prediction_entrees']/2000)
+            film['estimation_entrees_quot'] = int(film['estimation_entrees_cinema']/7)
+            film['estimation_recette_hebdo'] = film['estimation_entrees_cinema']*10
             #print(f"************************************{film['prediction_entrees']}")
         else:
             film['prediction_entrees'] = f'Erreur de prédiction: {response.status_code} - {response.text}'
