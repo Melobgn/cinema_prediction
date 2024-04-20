@@ -51,3 +51,18 @@ def get_actors_by_film(conn, film_id):
     except mysql.connector.Error as e:
         print(f"Error fetching actors: {e}")
     return actors
+
+
+def calculate_score(person, influential_df):
+    if person in influential_df['name'].values:
+        row = influential_df[influential_df['name'] == person]
+        score = (row['nombre_tournage'].values[0] + row['prix'].values[0]) / row['duree_carriere'].values[0]
+        return score
+    return 0
+
+def update_prediction_scores(films, influential_df):
+    for film in films:
+        actors_score = sum(calculate_score(actor, influential_df) for actor in film['acteurs'])
+        directors_score = sum(calculate_score(director, influential_df) for director in film['realisateurs'])
+        film['scoring_acteurs_realisateurs'] = actors_score + directors_score
+    return films

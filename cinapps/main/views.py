@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .functions import get_directors_by_film, get_actors_by_film
+from .functions import get_directors_by_film, get_actors_by_film, calculate_score, update_prediction_scores
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from requests import Request, Session
@@ -10,6 +10,9 @@ import mysql.connector
 from .database import connect_to_azure_mysql
 import requests
 from datetime import datetime, timedelta
+import pandas as pd 
+
+influential_people = pd.read_csv('/home/utilisateur/Bureau/Projets/cinema_prediction/cinapps/main/acteurs.csv')
 
 @login_required
 def home_page(request):
@@ -28,7 +31,9 @@ def home_page(request):
                 film['acteurs'] = [actor['nom'] for actor in get_actors_by_film(conn, film['id_film'])]
                 film['realisateurs'] = [director['nom'] for director in get_directors_by_film(conn, film['id_film'])]
 
-
+            # Update the scores for films based on influential actors and directors
+            films = update_prediction_scores(films, influential_people)
+           
             cursor.close()
             conn.close()
 
@@ -76,8 +81,8 @@ def get_predictions(films):
             'genre': film['genre'] if film['genre'] is not None else 'missing',
             'pays': film['pays'] if film['pays'] is not None else 'missing',
             'salles_premiere_semaine': film['salles'] if film['salles'] is not None else None,  # Assumez une médiane ou laissez None si géré côté API
-            'scoring_acteurs_realisateurs': 1,  # Valeur fixe
-            'coeff_studio': 1,  # Valeur fixe
+            'scoring_acteurs_realisateurs': film['scoring_acteurs_realisateurs'],  # Include the updated scoring
+            'coeff_studio': 1,  # fixed value
             'year': film['date_sortie'].year if film['date_sortie'] and film['date_sortie'].year else None  # Assumez une médiane ou laissez None si géré côté API
         }
         response = requests.post(url, json=data, headers=headers)
@@ -87,6 +92,7 @@ def get_predictions(films):
             film['estimation_entrees_cinema'] = int(film['prediction_entrees']/2000)
             film['estimation_entrees_quot'] = int(film['estimation_entrees_cinema']/7)
             film['estimation_recette_hebdo'] = film['estimation_entrees_cinema']*10
+            #print(film['scoring_acteurs_realisateurs'])
             #print(f"************************************{film['prediction_entrees']}")
         else:
             film['prediction_entrees'] = f'Erreur de prédiction: {response.status_code} - {response.text}'
