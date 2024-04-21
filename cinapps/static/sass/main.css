@@ -1,39 +1,39 @@
 @charset "UTF-8";
 @font-face {
   font-family: "futiger";
-  src: url("../../fonts/Frutiger.ttf");
+  src: url("../fonts/Frutiger.ttf");
   font-weight: normal;
 }
 @font-face {
   font-family: "futiger";
-  src: url("../../fonts/Frutiger_bold.ttf");
+  src: url("../fonts/Frutiger_bold.ttf");
   font-weight: bold;
 }
 @font-face {
   font-family: "comic";
-  src: url("../../fonts/comic/ComicNeue-Regular.ttf");
+  src: url("../fonts/comic/ComicNeue-Regular.ttf");
   font-weight: normal;
 }
 @font-face {
   font-family: "comic";
-  src: url("../../fonts/comic/ComicNeue-Bold.ttf");
+  src: url("../fonts/comic/ComicNeue-Bold.ttf");
   font-weight: bold;
 }
 @font-face {
   font-family: "comic";
-  src: url("../../fonts/comic/ComicNeue-Italic.ttf");
+  src: url("../fonts/comic/ComicNeue-Italic.ttf");
   font-style: italic;
 }
 @font-face {
   font-family: "Pixelify";
-  src: url("../../fonts/PixelifySans-Bold.ttf");
+  src: url("../fonts/PixelifySans-Bold.ttf");
   font-style: bold;
 }
 html, body {
   margin: 0;
   padding: 0;
   height: 110vh;
-  font-family: "futiger", sans-serif;
+  font-family: "comic", sans-serif;
   background-color: rgb(248, 248, 248);
 }
 
@@ -48,7 +48,7 @@ html, body {
   width: 50px;
   height: 4px;
   background-color: rgb(221, 72, 72);
-  margin-bottom: 30px;
+  margin: 50px 0;
 }
 
 .parallax {
@@ -60,8 +60,20 @@ html, body {
 
 h1 {
   text-transform: uppercase;
-  font-family: "Pixelify", sans-serif;
+  font-family: "futiger", sans-serif;
   font-size: 25px;
+}
+
+.btn_red {
+  margin-top: 60px;
+  margin-left: 50px;
+  background-color: rgb(240, 6, 6);
+  color: white;
+  padding: 3px;
+}
+.btn_red:hover {
+  background-color: black;
+  cursor: pointer;
 }
 
 .button {
@@ -103,8 +115,8 @@ nav {
   padding-left: 3%;
 }
 
-a img {
-  width: 150px;
+.logo_header {
+  width: 180px;
 }
 
 .burger-menu {
@@ -143,7 +155,7 @@ a img {
   text-decoration: none;
   color: rgb(236, 236, 236);
   font-weight: bold;
-  font-size: 20px;
+  font-size: 24px;
 }
 .menu-items li a:hover {
   color: rgb(248, 212, 5);
@@ -302,6 +314,10 @@ li {
   background-image: url("../img/joker_home.gif");
   padding-top: 200px;
 }
+#home .pred_affiche {
+  color: orangered;
+  font-weight: bold;
+}
 #home .home-des {
   width: 30%;
   height: 100%;
@@ -323,6 +339,28 @@ li {
 #home .home-des .home-title {
   display: flex;
   gap: 20px;
+}
+#home .home-des .salles_dispo {
+  display: flex;
+  justify-content: space-around;
+  color: orangered;
+}
+#home .home-des .top_films {
+  display: flex;
+  justify-content: space-around;
+  font-size: 17px;
+}
+#home .home-des .top_films a img {
+  width: 100%;
+}
+#home .chiffre_affaires {
+  text-align: center;
+  padding-top: 15px;
+  font-size: 20px;
+}
+#home .chiffre_affaires h1 {
+  background-color: rgb(240, 6, 6);
+  color: gold;
 }
 #home #films {
   background-color: rgb(243, 233, 204);
@@ -357,7 +395,7 @@ li {
 }
 #home #films #box-container .affiche {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 500px 1fr;
   grid-template-rows: 200px;
   border: 1px rgba(0, 0, 0, 0.418) solid;
   border-radius: 20px;
@@ -368,14 +406,15 @@ li {
   transition: 0.5s;
 }
 #home #films #box-container .affiche:hover {
-  grid-template-columns: 250px 1fr;
+  grid-template-columns: 350px 1fr;
+  cursor: pointer;
+  grid-template-rows: 700px;
 }
 #home #films #box-container .img-affiche {
   overflow: hidden;
-  height: 350px;
 }
 #home #films #box-container .img-affiche img {
-  height: 200px;
+  height: 400px;
 }
 #home #films #box-container .content-affiche {
   position: relative;
@@ -389,27 +428,36 @@ li {
   width: 90%;
   bottom: 0;
   padding: 0px 20px 0px 10px;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 30px;
   font-size: 700;
 }
 
 @media screen and (max-width: 1800px) {
   #home .home-des {
-    width: 65%;
+    width: 75%;
     margin-right: inherit;
   }
   #home #films {
-    width: 70%;
+    width: 80%;
   }
 }
 @media screen and (max-width: 1300px) {
   #home .home-des {
     padding: 30px 20px 20px 50px;
     box-shadow: inset 2em 1em rgb(240, 6, 6);
+    width: 100%;
   }
   #home #films {
     width: 100%;
+  }
+}
+@media screen and (max-width: 1000px) {
+  #home #films #box-container .affiche {
+    grid-template-columns: 150px 1fr !important;
+  }
+  #home #films #box-container .affiche img {
+    height: 200px;
   }
 }
 #chiffre_page {
