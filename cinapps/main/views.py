@@ -12,6 +12,7 @@ import requests
 from datetime import datetime, timedelta
 import pandas as pd 
 from .models import PredictionFilm
+
 #charger le csv
 actors = pd.read_csv('main/acteurs_coef.csv')
 
@@ -21,9 +22,8 @@ def home_page(request):
     if conn:
         try:
             cursor = conn.cursor(dictionary=True)
-            date_semaine = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
-            query = "SELECT id_film, titre, studio, description, image, film_url, date_sortie, genre, salles, pays, duree, budget FROM films WHERE date_sortie >= %s"
-            cursor.execute(query, (date_semaine,))
+            query = "SELECT id_film, titre, studio, description, image, film_url, date_sortie, genre, salles, pays, duree, budget FROM films WHERE is_pred = %s"
+            cursor.execute(query, (1,))
             films = cursor.fetchall()
 
 
