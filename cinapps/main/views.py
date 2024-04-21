@@ -24,31 +24,22 @@ def home_page(request):
             films = cursor.fetchall()
 
             #boucle de pred pour chaque film 
+            predictions_films = []
             for film in films:
-                print('VOICI UN FILM DE FILMS********', film)
                 prediction = get_predictions(film)
-
-                film['prediction'] = prediction
-                # if 'budget' in film:
-                #     prediction = get_predictions(film)
-                #     if prediction:
-                #         film['prediction'] = prediction
-                #     else:
-                #         film['prediction'] = None
-                # else: 
-                #     film['prediction'] = None
-                # print("######PREDICTION DU FILM", prediction)
+                predictions_films.append((prediction, film))
+                film['prediction_entrees'] = prediction
 
             cursor.close()
             conn.close()
 
-            # Obtention des prédictions pour chaque film
-            #films = get_predictions(films)
-
-            # Trier les films par prédiction d'entrées dans l'ordre décroissant
-            films_sorted = sorted(films, key=lambda x: x.get('prediction_entrees', 0), reverse=True)
-
+            ## Trie films par préd d'entrées dans l'ordre décroissant
+            predictions_films_sorted = sorted(predictions_films, key=lambda x: x[0]['prediction'], reverse=True)
+            films_sorted = [film for prediction, film in predictions_films_sorted]
+            
             return render(request, "main/home_page.html", {"films": films_sorted})
+        
+
         except mysql.connector.Error as e:
             print(f"Erreur lors de l'exécution de la requête SQL: {e}")
             return render(request, 'main/home_page.html', {"error": str(e)})
@@ -118,100 +109,30 @@ def scoring_casting(film):
 
 
 def get_predictions(film):
-    # url = os.getenv('URL_API') # Ajustez l'URL si nécessaire
-    # headers = {'Content-Type': 'application/json'}
-    # print('****TYPE DE FILMet contenu de FILM',type(film), film)
-    # #film = json.loads(film)
-    # payload_df = pd.DataFrame({
-    #     'budget': [film.get('budget')],
-    #     'duree': [film.get('duree')],
-    #     'genre': [film.get('genre')],
-    #     'pays':[film['pays']],
-    #     'salles_premiere_semaine': [film['salles']],
-    #     'scoring_acteurs_realisateurs': [scoring_casting(film)],#calculé avec fonction scoring_casting qui requete tables film, participe et personnes,
-    #     'coeff_studio': [get_studio_coefficient(film['studio'])],
-    #     'year': [film['date_sortie'].year]
-    # }, index=[0])
-    # print('**************', type(payload_df), payload_df)
-    # print('$$$$$$$$ BUDGET ET TITRE', film['budget'], film['titre'])
-
-    # #convertir df en json
-    # payload_json = payload_df.to_json(orient = 'records')
-
-    # # Convertir le JSON en dictionnaire Python
-    # payload_dict = json.loads(payload_json)
-
-    # # Extraire le premier élément de la liste
-    # payload_single = payload_dict[0]
-    # print('payloas_single!!!!!!!!!', payload_single)
-    # payload_df = pd.DataFrame.from_dict(payload_single, orient='index').T
-    # # Envoyer le dictionnaire unique à l'API
-    # response = requests.post(url, json=payload_df)
-
-    # print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    # print(type(payload_json))
-    # print(payload_json)
-
-    # response = requests.post(url, json=json.loads(payload_json))
-    ####
-    # # Convertir le JSON en dictionnaire Python
-    # payload_dict = json.loads(payload_json)
-    # print('%%%%%%%%%%%')
-    # print(payload_dict)
-    # print(type(payload_dict)) #type liste!
-    # print('######## TYPE DES ELEMENTS DE DICT')
-    # for item in payload_dict:
-    #     # Vérifier le type de chaque clé et valeur dans le dictionnaire
-    #     for key, value in item.items():
-    #         print(key, type(value))
-    # # Parcourir les clés et les valeurs du dictionnaire
-   
-########
-    # if response.status_code == 200:
-    #     prediction = response.json()
-    #     print('**********prediction', prediction)
-
-    #     return prediction
-    # else:
-    #     print(f"Echec de la requete à l'api: {response.status_code}")
-    #     return None
-
-    # Prépare les données pour l'API
-    # for film in films:
-    #     #print(film)
-    #     data = {
-    #         'budget': film['budget'] if film['budget'] is not None else 25000000,  # Médiane pour le budget
-    #         'duree': film['duree'] if film['duree'] is not None else 107,  # Médiane pour la durée
-    #         'genre': film['genre'] if film['genre'] is not None else 'missing',
-    #         'pays': film['pays'] if film['pays'] is not None else 'missing',
-    #         'salles_premiere_semaine': film['salles'] if film['salles'] is not None else None,  # Assumez une médiane ou laissez None si géré côté API
-    #         'scoring_acteurs_realisateurs': 1,  # Valeur fixe
-    #         'coeff_studio': 1,  # Valeur fixe
-    #         'year': film['date_sortie'].year if film['date_sortie'] and film['date_sortie'].year else None  # Assumez une médiane ou laissez None si géré côté API
-    #     }
-    #     response = requests.post(url, json=data, headers=headers)
-    #     if response.status_code == 200:
-    #         prediction = response.json()
-    #         film['prediction_entrees'] = prediction['prediction']
-    #         #print(f"************************************{film['prediction_entrees']}")
-    #     else:
-    #         film['prediction_entrees'] = f'Erreur de prédiction: {response.status_code} - {response.text}'
-    # return films
-
-
-    url = os.getenv('URL_API')
+    url = os.getenv('URL_API') # Ajustez l'URL si nécessaire
     headers = {'Content-Type': 'application/json'}
+    print('****TYPE DE FILMet contenu de FILM',type(film), film)
+    #film = json.loads(film)
+    payload= {
+        'budget': film['budget'],
+        'duree': film['duree'],
+        'genre': film['genre'],
+        'pays': film['pays'],
+        'salles_premiere_semaine': film['salles'],
+        'scoring_acteurs_realisateurs': scoring_casting(film),#calculé avec fonction scoring_casting qui requete tables film, participe et personnes,
+        'coeff_studio': get_studio_coefficient(film['studio']),
+        'year': film['date_sortie'].year}
+    print('**************', type(payload), payload) #payload est un dico ici
 
-    # Extraire l'année de la date_sortie et la convertir en entier
-    film['year'] = film['date_sortie'].year
+    for key, value in payload.items(): #gestion des None qui empechent l'api de faire pred
+        print ('########', payload[key])
+        if payload[key] == None:
+            payload[key] = 0
+        print('%%%%%%%%%%', payload)
 
-    # Supprimer la clé date_sortie car elle n'est plus nécessaire
-    del film['date_sortie']
 
-    # Convertir le dictionnaire film en JSON
-    payload_json = json.dumps(film)
 
-    response = requests.post(url, json=payload_json)
+    response = requests.post(url, json=payload)
     if response.status_code == 200:
         prediction = response.json()
         print('Prediction:', prediction)
