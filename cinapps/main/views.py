@@ -11,7 +11,7 @@ from .database import connect_to_azure_mysql, get_actors_by_film, get_directors_
 import requests
 from datetime import datetime, timedelta
 import pandas as pd 
-
+from .models import PredictionFilm
 #charger le csv
 actors = pd.read_csv('main/acteurs_coef.csv')
 
@@ -94,6 +94,10 @@ def get_predictions(films):
             #print(film['scoring_acteurs_realisateurs'])
             #print(film['coeff_studio'])
             #print(f"************************************{film['prediction_entrees']}")
+            PredictionFilm.objects.update_or_create(
+                titre=film['titre'],
+                defaults={'prediction_entrees': film['prediction_entrees']}
+            )
         else:
             film['prediction_entrees'] = f'Erreur de prédiction: {response.status_code} - {response.text}'
     return films

@@ -39,10 +39,12 @@
             display: flex;
             justify-content: space-around;
             color: orangered;
+            
         }
         .top_films{
             display: flex;
             justify-content: space-around;
+            font-size: 17px;
             a img{
                 width: 100%;
             }
@@ -53,6 +55,7 @@
     .chiffre_affaires{
             text-align: center;
             padding-top: 15px;
+            font-size: 20px;
             h1{
                 background-color: rgb(240, 6, 6);
                 color: gold
@@ -151,7 +154,7 @@
                     width: 90%;
                     bottom: 0;
                     padding: 0px 20px 0px 10px;
-                    font-size: 15px;
+                    font-size: 17px;
                     line-height: 30px;
                     font-size: 700;
                 }

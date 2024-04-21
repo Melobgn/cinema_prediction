@@ -1,18 +1,18 @@
 @font-face {
     font-family: "futiger";
-    src: url("../../fonts/Frutiger.ttf");
+    src: url("../fonts/Frutiger.ttf");
     font-weight: normal;
   }
   
   @font-face {
     font-family: "futiger";
-    src: url("../../fonts/Frutiger_bold.ttf");
+    src: url("../fonts/Frutiger_bold.ttf");
     font-weight: bold;
   }
 
   @font-face {
     font-family: "comic";
-    src: url("../../fonts/comic/ComicNeue-Regular.ttf");
+    src: url("../fonts/comic/ComicNeue-Regular.ttf");
     font-weight: normal; // si fontweight normal applique cette police. 
   }
 
@@ -20,19 +20,19 @@
   // que ça fonctionne apres, sinon il nous met le bold partout.
   @font-face {
     font-family: "comic";
-    src: url("../../fonts/comic/ComicNeue-Bold.ttf");
+    src: url("../fonts/comic/ComicNeue-Bold.ttf");
     font-weight: bold; 
   }
 
   @font-face {
     font-family: "comic";
-    src: url("../../fonts/comic/ComicNeue-Italic.ttf");
+    src: url("../fonts/comic/ComicNeue-Italic.ttf");
     font-style: italic;
   }
 
   @font-face {
     font-family: "Pixelify";
-    src: url("../../fonts/PixelifySans-Bold.ttf");
+    src: url("../fonts/PixelifySans-Bold.ttf");
     font-style: bold;
   }
 
@@ -41,7 +41,7 @@
     margin: 0;
     padding: 0;
     height: 110vh;
-    font-family: 'futiger', sans-serif;
+    font-family: 'comic', sans-serif;
     background-color: rgb(248, 248, 248);
   }
 
@@ -68,9 +68,10 @@
 
 h1{
   text-transform: uppercase;
-  font-family: 'Pixelify', sans-serif;
+  font-family: 'futiger', sans-serif;
   font-size: 25px;
 }
+
 
 .btn_red{
   margin-top: 60px;

@@ -12,3 +12,10 @@ class User(AbstractUser):
 #stocker les informations de l'api en bdd
 class PredApi(models.Model):
     pass
+
+class PredictionFilm(models.Model):
+    titre = models.CharField(max_length=255)
+    prediction_entrees = models.IntegerField()
+
+    def __str__(self):
+        return self.titre
