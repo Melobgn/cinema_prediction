@@ -1,61 +1,40 @@
 # apiVersion: '2019-12-01'
 # location: francecentral
-# name: api_django
+# name: cinapps
 # properties:
 #   containers:
-#     - name: postgresdb
+#     - name: cron
 #       properties:
-#         image: postgres
+#         image: melobgn/cron  # Remplace <image_cron_job> par l'image de ton cron job
 #         resources:
 #           requests:
-#             cpu: 1
-#             memoryInGb: 1
-#         ports:
-#           - port: 5432
-#         environmentVariables:
-#           - name: POSTGRES_DB
-#             value: demo_db
-#           - name: POSTGRES_PASSWORD
-#             value: 123
-#           - name: POSTGRES_USER
-#             value: myuser
-#           - name: POSTGRES_HOST
-#             value: postgresdb
-#           - name: POSTGRES_PORT
-#             value: 5432
+#             cpu: 0.5  # Ajuste les ressources CPU selon les besoins de ton cron job
+#             memoryInGb: 0.5  # Ajuste la mémoire selon les besoins de ton cron job
+
 #     - name: web
 #       properties:
-#         image: melobgn/django_sba
+#         image: melobgn/django_cinapps
 #         resources:
 #           requests:
 #             cpu: 1
 #             memoryInGb: 1.5
 #         ports:
-#           - port: 8001
+#           - port: 8006
 #         environmentVariables:
 #           - name: SECRET_KEY
-#             value: ldhsercwnx7+w=fs@m!o#h$m)lkyme0!5h$=$wq-1*vmz!^s
+#             # value: ldhsercwnx7+w=fs@m!o#h$m)lkyme0!5h$=$wq-1*vmz!^s
 #           - name: URL_API
 #             value: http://localhost:8002/predict
 #           - name: DEBUG
 #             value: "0"
-#           - name: POSTGRES_DB
-#             value: demo_db
-#           - name: POSTGRES_PASSWORD
-#             value: "123"
-#           - name: POSTGRES_USER
-#             value: myuser
-#           - name: POSTGRES_HOST
-#             value: localhost
-#           - name: POSTGRES_PORT
-#             value: 5432
-#           - name: POSTGRES_RDY
-#             value: 1
+#           - name: AZURE_DB_CONNECTION_STRING
+#             value: <connection_string>  # Remplace <connection_string> par la chaîne de connexion à ta base de données sur Azure
 #           - name: SENDGRID_API_KEY
 #             value: ----
+
 #     - name: api
 #       properties:
-#         image: melobgn/api_sba
+#         image: melobgn/api_cinapps
 #         resources:
 #           requests:
 #             cpu: 2
