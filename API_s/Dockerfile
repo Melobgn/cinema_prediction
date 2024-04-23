@@ -14,7 +14,7 @@ ENV PYTHONUNBUFFERED 1
 
 COPY . /app
 
-EXPOSE 8000
+EXPOSE 8002
 
 # Définir la commande pour démarrer l'application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8002"]
