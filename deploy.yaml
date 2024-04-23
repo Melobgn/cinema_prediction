@@ -25,13 +25,13 @@ properties:
           - port: 8001
         environmentVariables:
           - name: SECRET_KEY
-            value: 123
+            value: "123"
           - name: URL_API
-            value: http://localhost:8002/predict
+            value: http://API_s:8002/prediction
           - name: DEBUG
             value: "0"
           - name: AZURE_DB_CONNECTION_STRING
-            value: ldhsercwnx7+w=fs@m!o#h$m)lkyme0!5h$=$wq-1*vmz!^s"user=Spies;password=Simplon1948;host=dbcinapps.mysql.database.azure.com;port=3306;database=dbcinapps;ssl_ca=$(cat cinapps/.env | grep SSL_CA_CONTENT | cut -d'=' -f2);ssl_disabled=False"
+            value: "user=Spies;password=Simplon1948;host=dbcinapps.mysql.database.azure.com;port=3306;database=dbcinapps;ssl_ca=$(cat cinapps/.env | grep SSL_CA_CONTENT | cut -d'=' -f2);ssl_disabled=False"
           - name: SENDGRID_API_KEY
             value: ----
 
