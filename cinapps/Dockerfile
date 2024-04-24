@@ -16,7 +16,7 @@ ENV PYTHONUNBUFFERED 1
 
 COPY . /app
 
-EXPOSE 8001
+EXPOSE 8000
 
 RUN chmod +x /app/entrypoint.sh
 

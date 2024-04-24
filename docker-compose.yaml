@@ -5,7 +5,7 @@ services:
       - automatisation
       - API_s
     ports:
-      - 8001:8001
+      - 8006:8000
     env_file:
       - cinapps/.env
     build:
@@ -14,14 +14,17 @@ services:
     volumes:
       - ./cinapps/:/app/
   automatisation:
+    image: cron   # Nom de votre image Docker pour le cron job
     build:
       context: ./automatisation/
-      dockerfile: Dockerfile   
+      dockerfile: Dockerfile
     # Ajoutez d'autres configurations nécessaires pour votre cron job ici
     # Par exemple, montez les fichiers de configuration, définissez des variables d'environnement, etc.
   API_s:
     ports:
-      - 8002:8002
+      - 8002:8000
     build:
       context: ./API_s/
       dockerfile: Dockerfile
+    image: api   # Nom de votre image Docker pour FastAPI
+
