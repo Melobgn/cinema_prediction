@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .functions import scoring_casting, get_studio_coefficient
+# from .functions import scoring_casting, get_studio_coefficient
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from requests import Request, Session
@@ -12,6 +12,7 @@ import requests
 from datetime import datetime, timedelta
 import pandas as pd 
 from .models import PredictionFilm
+#from .functions import scoring_casting, get_studio_coefficient
 
 #charger le csv
 actors = pd.read_csv('main/acteurs_coef.csv')
@@ -23,15 +24,15 @@ def home_page(request):
         try:
             cursor = conn.cursor(dictionary=True)
             query = "SELECT id_film, titre, studio, description, image, film_url, date_sortie, genre, salles, pays, duree, budget FROM films WHERE is_pred = %s"
-            cursor.execute(query, (1,))
+            cursor.execute(query, (0,))
             films = cursor.fetchall()
 
 
             for film in films:
                 film['acteurs'] = [actor['nom'] for actor in get_actors_by_film(conn, film['id_film'])]
                 film['realisateurs'] = [director['nom'] for director in get_directors_by_film(conn, film['id_film'])]
-                film['scoring_acteurs_realisateurs'] = scoring_casting(film, actors)
-                film['coeff_studio'] = get_studio_coefficient(film['studio'], conn)
+                # film['scoring_acteurs_realisateurs'] = scoring_casting(film, actors)
+                # film['coeff_studio'] = get_studio_coefficient(film['studio'], conn)
 
             cursor.close()
             conn.close()
@@ -58,7 +59,7 @@ def home_page(request):
                 'benefice': benefice
             }
 
-            return render(request, "main/home_page.html", {"films": top_ten_films, "top_two": top_two_films, "tab_result":tab_result})
+            return render(request, "main/home_page.html", {"films": top_ten_films, "top_two": top_two_films, "tab_result":tab_result })
         except mysql.connector.Error as e:
             print(f"Erreur lors de l'exécution de la requête SQL: {e}")
             return render(request, 'main/home_page.html', {"error": str(e)})
@@ -80,11 +81,12 @@ def get_predictions(films):
             'genre': film['genre'] if film['genre'] is not None else 'missing',
             'pays': film['pays'] if film['pays'] is not None else 'missing',
             'salles_premiere_semaine': film['salles'] if film['salles'] is not None else None,  # Assumez une médiane ou laissez None si géré côté API
-            'scoring_acteurs_realisateurs': film['scoring_acteurs_realisateurs'],  # Include the updated scoring
-            'coeff_studio': film['coeff_studio'],
+            'scoring_acteurs_realisateurs': 0,  # Include the updated scoring
+            'coeff_studio': 0,
             'year': film['date_sortie'].year if film['date_sortie'] and film['date_sortie'].year else None  # Assumez une médiane ou laissez None si géré côté API
         }
-        response = requests.post(url, json=data, headers=headers)
+        json_data = json.dumps(data, cls=DecimalEncoder)  # Use custom encoder here
+        response = requests.post(url, data=json_data, headers=headers)
         if response.status_code == 200:
             prediction = response.json()
             film['prediction_entrees'] = int(prediction['prediction']) #stock la prediction
@@ -93,7 +95,7 @@ def get_predictions(films):
             film['estimation_recette_hebdo'] = film['estimation_entrees_cinema']*10
             #print(film['scoring_acteurs_realisateurs'])
             #print(film['coeff_studio'])
-            #print(f"************************************{film['prediction_entrees']}")
+            print(f"************************************{film['prediction_entrees']}")
             PredictionFilm.objects.update_or_create(
                 titre=film['titre'],
                 defaults={'prediction_entrees': film['prediction_entrees']}
@@ -101,6 +103,7 @@ def get_predictions(films):
         else:
             film['prediction_entrees'] = f'Erreur de prédiction: {response.status_code} - {response.text}'
     return films
+
 
 @login_required
 def chiffre_page(request):
@@ -110,7 +113,16 @@ def chiffre_page(request):
 def archive_page(request):
     return render(request, "main/archive_page.html")
 
+import json
+from decimal import Decimal
 
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return str(obj)  # Converts Decimal to string
+        return super().default(obj)
+    
+    
 #Lorsque vous configurez une tâche périodique avec Celery, celle-ci est exécutée de manière autonome selon
 # l'horaire défini, et non pas à chaque fois que la page est appelée. Cela signifie que la tâche pour récupérer
 # les films et obtenir les prédictions se déclenchera automatiquement à l'heure prévue chaque semaine, 
