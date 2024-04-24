@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .functions import multiplicate_by_5
+from .functions import scoring_casting, get_studio_coefficient
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from requests import Request, Session
@@ -7,9 +7,13 @@ from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import os
 import json
 import mysql.connector
-from .database import connect_to_azure_mysql
+from .database import connect_to_azure_mysql, get_actors_by_film, get_directors_by_film
 import requests
 from datetime import datetime, timedelta
+import pandas as pd 
+from .models import PredictionFilm
+#charger le csv
+actors = pd.read_csv('main/acteurs_coef.csv')
 
 @login_required
 def home_page(request):
@@ -18,9 +22,17 @@ def home_page(request):
         try:
             cursor = conn.cursor(dictionary=True)
             date_semaine = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
-            query = "SELECT titre, description, image, date_sortie, genre, salles, pays, duree, budget FROM films WHERE date_sortie >= %s"
+            query = "SELECT id_film, titre, studio, description, image, film_url, date_sortie, genre, salles, pays, duree, budget FROM films WHERE date_sortie >= %s"
             cursor.execute(query, (date_semaine,))
             films = cursor.fetchall()
+
+
+            for film in films:
+                film['acteurs'] = [actor['nom'] for actor in get_actors_by_film(conn, film['id_film'])]
+                film['realisateurs'] = [director['nom'] for director in get_directors_by_film(conn, film['id_film'])]
+                film['scoring_acteurs_realisateurs'] = scoring_casting(film, actors)
+                film['coeff_studio'] = get_studio_coefficient(film['studio'], conn)
+
             cursor.close()
             conn.close()
 
@@ -28,8 +40,25 @@ def home_page(request):
             films = get_predictions(films)
             # Trier les films par prédiction d'entrées dans l'ordre décroissant
             films_sorted = sorted(films, key=lambda x: x.get('prediction_entrees', 0), reverse=True)
+            
+             # Sélectionner uniquement les dix meilleurs films
+            top_ten_films = films_sorted[:10]
+            
+            # Sélectionner uniquement les deux premiers
+            top_two_films = films_sorted[:2]
+            
+            #chiffre d'affaire
+            ch_affaires = sum(film['estimation_recette_hebdo'] for film in top_two_films)
+            charge = 4900
+            benefice = ch_affaires - charge
 
-            return render(request, "main/home_page.html", {"films": films_sorted})
+            tab_result = {
+                'ch_affaires':ch_affaires,
+                'charge':charge,
+                'benefice': benefice
+            }
+
+            return render(request, "main/home_page.html", {"films": top_ten_films, "top_two": top_two_films, "tab_result":tab_result})
         except mysql.connector.Error as e:
             print(f"Erreur lors de l'exécution de la requête SQL: {e}")
             return render(request, 'main/home_page.html', {"error": str(e)})
@@ -51,15 +80,24 @@ def get_predictions(films):
             'genre': film['genre'] if film['genre'] is not None else 'missing',
             'pays': film['pays'] if film['pays'] is not None else 'missing',
             'salles_premiere_semaine': film['salles'] if film['salles'] is not None else None,  # Assumez une médiane ou laissez None si géré côté API
-            'scoring_acteurs_realisateurs': 1,  # Valeur fixe
-            'coeff_studio': 1,  # Valeur fixe
+            'scoring_acteurs_realisateurs': film['scoring_acteurs_realisateurs'],  # Include the updated scoring
+            'coeff_studio': film['coeff_studio'],
             'year': film['date_sortie'].year if film['date_sortie'] and film['date_sortie'].year else None  # Assumez une médiane ou laissez None si géré côté API
         }
         response = requests.post(url, json=data, headers=headers)
         if response.status_code == 200:
             prediction = response.json()
-            film['prediction_entrees'] = prediction['prediction']
+            film['prediction_entrees'] = int(prediction['prediction']) #stock la prediction
+            film['estimation_entrees_cinema'] = int(film['prediction_entrees']/2000)
+            film['estimation_entrees_quot'] = int(film['estimation_entrees_cinema']/7)
+            film['estimation_recette_hebdo'] = film['estimation_entrees_cinema']*10
+            #print(film['scoring_acteurs_realisateurs'])
+            #print(film['coeff_studio'])
             #print(f"************************************{film['prediction_entrees']}")
+            PredictionFilm.objects.update_or_create(
+                titre=film['titre'],
+                defaults={'prediction_entrees': film['prediction_entrees']}
+            )
         else:
             film['prediction_entrees'] = f'Erreur de prédiction: {response.status_code} - {response.text}'
     return films
