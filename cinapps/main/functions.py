@@ -1,3 +1,5 @@
+import mysql.connector
+
 def scoring_casting(film, actors_df):
     poids_total = 0
     noms_personnes_dans_film = ','.join(film['acteurs'] + film['realisateurs'])
@@ -9,8 +11,8 @@ def scoring_casting(film, actors_df):
 
 
 def get_studio_coefficient(studio, conn):
+    cursor = conn.cursor()
     try:
-        cursor = conn.cursor()
         cursor.execute("""
             SELECT
                 CASE
@@ -24,11 +26,10 @@ def get_studio_coefficient(studio, conn):
             WHERE
                 studio = %s
         """, (studio,))
-        studio_coef = cursor.fetchone()[0]
-        cursor.close()
-        return studio_coef
+        result = cursor.fetchone()
+        return result[0] if result else 0
     except mysql.connector.Error as e:
         print(f"Erreur lors de l'exécution de la requête SQL: {e}")
-        return 0  
-
-
+        return 0
+    finally:
+        cursor.close()

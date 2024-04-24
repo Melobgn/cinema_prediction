@@ -16,7 +16,7 @@ echo "Lancer le serveur"
 
 ### production ###
 # ### Version avec gunicorn pour le serveur web
-gunicorn cinapps.wsgi:application --workers=4 --bind=0.0.0.0:8000 --reload
+gunicorn cinapps.wsgi:application --workers=4 --bind=0.0.0.0:8001 --reload
 
 
 # dev en local ###

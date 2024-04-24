@@ -1,0 +1,206 @@
+//a propos et evenements
+#home{
+    padding: 3% 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background-image: url('../img/joker_home.gif');
+    padding-top: 200px;
+
+    .pred_affiche{
+        color: orangered;
+        font-weight: bold;
+    }
+    .home-des{
+        width: 30%;
+        height: 100%;
+        text-align: justify;
+        border: 4px solid rgb(52, 5, 1);
+        border-radius: 10px;
+        padding: 30px 20px 20px 100px;
+        background-color: rgb(243, 233, 204);
+        color: black;
+        box-shadow: inset 4em 1em rgb(240, 6, 6);
+        
+        a{
+            color:  orange;
+            font-size: 30px;
+            &:hover{
+                color: orangered;
+            }
+        }
+        .home-title{
+            display: flex;
+            gap: 20px;
+        }
+
+        .salles_dispo{
+            display: flex;
+            justify-content: space-around;
+            color: orangered;
+            
+        }
+        .top_films{
+            display: flex;
+            justify-content: space-around;
+            font-size: 17px;
+            a img{
+                width: 100%;
+            }
+        }
+
+        
+    }
+    .chiffre_affaires{
+            text-align: center;
+            padding-top: 15px;
+            font-size: 20px;
+            h1{
+                background-color: rgb(240, 6, 6);
+                color: gold
+            }
+    }
+    #films{
+            background-color: rgb(243, 233, 204);
+            border: 4px solid rgb(52, 5, 1);
+            box-shadow: 10px 5px 5px rgb(240, 6, 6);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            width: 50%;
+
+            #films-title{
+                text-align: center;
+            }
+
+            #box-container{
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                
+                
+                  
+                    h1{
+                        text-align: center;
+                        font-size: 25px;
+                        text-transform: uppercase;
+                        color: rgb(185, 46, 0);
+                    }
+
+                    #box-films{
+                        max-height: 700px; /* Définissez la hauteur maximale souhaitée */
+                        overflow-y: auto; /* Active la barre de défilement verticale lorsque le contenu dépasse la hauteur maximale */
+                        overflow-x: hidden;
+                        border: 2px solid rgb(0, 0, 0);
+                        border-radius: 10px;
+                        background-color: rgb(241, 236, 215);
+                    }
+
+                
+                
+
+
+                .affiche {
+                    // margin-bottom: 10px;
+                    // display: flex;
+                    // flex-flow: row nowrap;
+                    display: grid;
+                    grid-template-columns: 500px 1fr;
+                    grid-template-rows: 200px;
+                    border: 1px rgba(0, 0, 0, 0.418) solid;
+                    border-radius: 20px;
+                    overflow: hidden;
+                    margin-left: 10px;
+                    margin-bottom: 10px;
+                    width: 95%;
+                    // height: 300px;
+                    transition: .5s;
+                    
+                    &:hover{
+                        grid-template-columns: 350px 1fr;
+                        cursor: pointer;
+                        grid-template-rows: 700px;
+                    }
+
+                }
+
+
+                .img-affiche {
+                    
+                    overflow: hidden;
+                    //height: 400px;
+                    
+                    img {
+                    
+                        height: 400px;
+                        
+                    }
+
+                }
+                
+               
+                .content-affiche {
+                    position: relative;
+                    padding-bottom: 20px;
+                }
+
+                .title-affiche {
+                    padding-left: 10px;
+                    color: rgb(0, 0, 0);
+                }
+    
+                .des-affiche {
+                    width: 90%;
+                    bottom: 0;
+                    padding: 0px 20px 0px 10px;
+                    font-size: 17px;
+                    line-height: 30px;
+                    font-size: 700;
+                }
+
+            }
+
+    }
+   
+}
+
+// media queries 
+@media screen and (max-width: 1800px){
+    #home{
+        .home-des{
+            width: 75%;
+            margin-right: inherit;
+        }
+
+        #films{
+           
+            width: 80%;
+        }
+    }
+}
+
+@media screen and (max-width: 1300px){
+
+     
+    //home
+    #home{
+        .home-des{
+            padding: 30px 20px 20px 50px;
+            box-shadow: inset 2em 1em rgb(240, 6, 6);
+            width: 100%;
+        }
+        #films{
+            width: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 1000px){
+    #home #films #box-container .affiche {
+        grid-template-columns: 150px 1fr !important;
+        img{
+            height: 200px;
+        }
+    }
+}
