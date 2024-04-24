@@ -1,0 +1,92 @@
+@font-face {
+    font-family: "futiger";
+    src: url("../fonts/Frutiger.ttf");
+    font-weight: normal;
+  }
+  
+  @font-face {
+    font-family: "futiger";
+    src: url("../fonts/Frutiger_bold.ttf");
+    font-weight: bold;
+  }
+
+  @font-face {
+    font-family: "comic";
+    src: url("../fonts/comic/ComicNeue-Regular.ttf");
+    font-weight: normal; // si fontweight normal applique cette police. 
+  }
+
+  // appliquera cette police si on met font-weight bold qq part, il faut bien preciser font-weight bold ici pr
+  // que ça fonctionne apres, sinon il nous met le bold partout.
+  @font-face {
+    font-family: "comic";
+    src: url("../fonts/comic/ComicNeue-Bold.ttf");
+    font-weight: bold; 
+  }
+
+  @font-face {
+    font-family: "comic";
+    src: url("../fonts/comic/ComicNeue-Italic.ttf");
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: "Pixelify";
+    src: url("../fonts/PixelifySans-Bold.ttf");
+    font-style: bold;
+  }
+
+ 
+  html, body{
+    margin: 0;
+    padding: 0;
+    height: 110vh;
+    font-family: 'futiger', sans-serif;
+    background-color: rgb(248, 248, 248);
+  }
+
+  .content-title-underline{
+    width: 50px;
+    height: 4px;
+    background-color: rgb(221, 72, 72);
+    margin: 0 auto 30px auto;
+  }
+
+  .content-title-underline2{
+    width: 50px;
+    height: 4px;
+    background-color: rgb(221, 72, 72);
+    margin: 50px 0;
+  }
+
+.parallax{
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+h1{
+  text-transform: uppercase;
+  font-family: 'futiger', sans-serif;
+  font-size: 25px;
+}
+
+
+.btn_red{
+  margin-top: 60px;
+  margin-left: 50px;
+  background-color: rgb(240, 6, 6);
+  color: white;
+  padding: 3px;
+    &:hover{
+      background-color: black;
+      cursor: pointer;
+      
+    }
+}
+
+  @media screen and (max-width: 1300px){
+
+  
+  }
